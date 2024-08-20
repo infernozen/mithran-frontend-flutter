@@ -121,10 +121,10 @@ class _SoilHealthState extends State<SoilHealth> {
         [12.75165425355935, 80.19599329680204],
         [12.753240558862867, 80.19547026604414]
       ],
-      "location": "SSN Cricket Ground Road, Kalavakkam, Tamil Nadu, India",
+      "location": "netaji street",
       "currentLocation": {
-        "longitude": 67.19634500145912,
-        "latitude": 12.752739586998171
+        "longitude": 77.22556264045598,
+        "latitude": 28.589714338352536
       },
       "Crop": "Rice",
     }
@@ -326,6 +326,7 @@ class _SoilHealthState extends State<SoilHealth> {
                         child: MapPreview(
                       latitude: cropFieldList[selectedIndex].latitude,
                       longitude: cropFieldList[selectedIndex].longitude,
+                      place: cropFieldList[selectedIndex].location,
                     )),
                     const SizedBox(height: 10.0),
                     Container(

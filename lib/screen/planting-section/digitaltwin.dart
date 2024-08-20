@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mithran/other/chat_bot.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 import '../../helpers/digitaltwinhelper.dart';
 
@@ -349,65 +350,76 @@ class DigitalTwin extends StatelessWidget {
               onTap: () {
                 // Handle tap action here, e.g., navigate to personalized suggestions
               },
-              child: Container(
-                width: size.width * 0.9,
-                height: size.height * 0.11,
-                decoration: BoxDecoration(
-                    color: const Color.fromRGBO(204, 234, 232, 1),
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                        color: const Color.fromRGBO(223, 221, 221, 0.957))),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    const Icon(Icons.info_outline,
-                        color: Colors.black, size: 32),
-                    SizedBox(
-                      width: size.width * 0.62,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 5),
-                          const Text(
-                            "Cant't find the right result?",
-                            style: TextStyle(
-                                fontFamily: "Poppins",
-                                fontSize: 17,
-                                fontWeight: FontWeight.w700),
-                          ),
-                          RichText(
-                            text: const TextSpan(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Chat(ongetBack: () {
+                              Navigator.pop(context);
+                            })),
+                  );
+                },
+                child: Container(
+                  width: size.width * 0.9,
+                  height: size.height * 0.11,
+                  decoration: BoxDecoration(
+                      color: const Color.fromRGBO(204, 234, 232, 1),
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                          color: const Color.fromRGBO(223, 221, 221, 0.957))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      const Icon(Icons.info_outline,
+                          color: Colors.black, size: 32),
+                      SizedBox(
+                        width: size.width * 0.62,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 5),
+                            const Text(
+                              "Cant't find the right result?",
                               style: TextStyle(
-                                fontFamily: "Poppins",
-                                color: Colors
-                                    .black, // Specify the default color for the text
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: "Click here to ask ",
-                                ),
-                                TextSpan(
-                                  text: "Uzhalavan",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text:
-                                      " our personalized farm assistant to help",
-                                ),
-                              ],
+                                  fontFamily: "Poppins",
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w700),
                             ),
-                            maxLines: 2,
-                          ),
-                          const SizedBox(height: 5),
-                        ],
+                            RichText(
+                              text: const TextSpan(
+                                style: TextStyle(
+                                  fontFamily: "Poppins",
+                                  color: Colors
+                                      .black, // Specify the default color for the text
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: "Click here to ask ",
+                                  ),
+                                  TextSpan(
+                                    text: "Uzhalavan",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text:
+                                        " our personalized farm assistant to help",
+                                  ),
+                                ],
+                              ),
+                              maxLines: 2,
+                            ),
+                            const SizedBox(height: 5),
+                          ],
+                        ),
                       ),
-                    ),
-                    const Icon(Icons.chevron_right_sharp,
-                        color: Colors.black, size: 32),
-                  ],
+                      const Icon(Icons.chevron_right_sharp,
+                          color: Colors.black, size: 32),
+                    ],
+                  ),
                 ),
               ),
             ),

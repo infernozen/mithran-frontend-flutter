@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:mithran/screen/init_page.dart';
 
 class TreatmentPage extends StatefulWidget {
   String title;
@@ -9,7 +10,13 @@ class TreatmentPage extends StatefulWidget {
   String chemicalTreatment;
   String organicTreatment;
   String refImg;
-  TreatmentPage({super.key,required this.title, required this.pathogen, required this.chemicalTreatment,required this.organicTreatment, required this.refImg});
+  TreatmentPage(
+      {super.key,
+      required this.title,
+      required this.pathogen,
+      required this.chemicalTreatment,
+      required this.organicTreatment,
+      required this.refImg});
 
   @override
   _TreatmentPageState createState() => _TreatmentPageState();
@@ -23,6 +30,7 @@ class _TreatmentPageState extends State<TreatmentPage> {
     await flutterTts.setPitch(1.0);
     await flutterTts.speak(text);
   }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -115,11 +123,11 @@ class _TreatmentPageState extends State<TreatmentPage> {
                                   clipBehavior: Clip.hardEdge,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15)),
-                                  child: Image.network(widget.refImg ,
+                                  child: Image.network(widget.refImg,
                                       fit: BoxFit.fill)),
                             ),
                             const SizedBox(width: 15),
-                             Center(
+                            Center(
                               child: SizedBox(
                                 width: size.width * 0.57,
                                 height: 92,
@@ -230,7 +238,7 @@ class _TreatmentPageState extends State<TreatmentPage> {
                     InkWell(
                       highlightColor: Colors.transparent,
                       splashColor: Colors.transparent,
-                      onTap:() {
+                      onTap: () {
                         _speak(widget.organicTreatment);
                       },
                       child: const Row(
@@ -340,7 +348,12 @@ class _TreatmentPageState extends State<TreatmentPage> {
                     ),
                     const SizedBox(height: 50),
                     ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => InitPage()),
+                          );
+                        },
                         style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.resolveWith<Color>(

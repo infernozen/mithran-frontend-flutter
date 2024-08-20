@@ -6,64 +6,51 @@ import 'package:geocoding/geocoding.dart';
 class MapPreview extends StatefulWidget {
   final double latitude;
   final double longitude;
-  MapPreview({super.key, required this.latitude, required this.longitude});
+  String place;
+  MapPreview(
+      {super.key,
+      required this.latitude,
+      required this.longitude,
+      required this.place});
   @override
   _MapPreviewState createState() => _MapPreviewState();
 }
 
 class _MapPreviewState extends State<MapPreview> {
-  String _placeName = 'Loading...';
+  String _placeName = "Loading ....";
   LatLng _location = LatLng(0.0, 0.0);
+  GoogleMapController? _mapController;
 
   @override
   void initState() {
     super.initState();
     _location = LatLng(widget.latitude, widget.longitude);
-    _getPlaceName();
+    _placeName = widget.place;
   }
 
   @override
   void didUpdateWidget(MapPreview oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.latitude != oldWidget.latitude ||
-        widget.longitude != oldWidget.longitude) {
-      _location = LatLng(widget.latitude, widget.longitude);
-      print(widget.latitude);
-      print(widget.longitude);
-      _getPlaceName();
-    }
+    setState(() {
+      if (widget.latitude != oldWidget.latitude ||
+          widget.longitude != oldWidget.longitude) {
+        _location = LatLng(widget.latitude, widget.longitude);
+
+        print(widget.latitude);
+        print(widget.longitude);
+        _placeName = widget.place;
+        _moveCamera();
+      }
+    });
   }
 
-  Future<void> _getPlaceName() async {
-    print(_location.latitude);
-    print(_location.longitude);
-    try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-        _location.latitude,
-        _location.longitude,
+  void _moveCamera() {
+    if (_mapController != null) {
+      _mapController!.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(target: _location, zoom: 18),
+        ),
       );
-
-      if (placemarks.isNotEmpty) {
-        Placemark place = placemarks.first;
-
-        setState(() {
-          _placeName = [place.locality, place.administrativeArea]
-              .where((element) => element != null && element.isNotEmpty)
-              .join(', ');
-
-          if (_placeName.isEmpty) {
-            _placeName = 'Unknown location';
-          }
-        });
-      } else {
-        setState(() {
-          _placeName = 'No place found';
-        });
-      }
-    } catch (e) {
-      setState(() {
-        _placeName = 'Error fetching location';
-      });
     }
   }
 
@@ -109,6 +96,9 @@ class _MapPreviewState extends State<MapPreview> {
                     infoWindow: InfoWindow(title: 'Location'),
                   ),
                 ]),
+                onMapCreated: (controller) {
+                  _mapController = controller;
+                },
               ),
             ),
           ),
@@ -116,6 +106,7 @@ class _MapPreviewState extends State<MapPreview> {
             bottom: 10,
             left: 10,
             child: Container(
+              width: 200,
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -137,12 +128,15 @@ class _MapPreviewState extends State<MapPreview> {
                     color: Color.fromARGB(255, 30, 30, 31),
                   ),
                   SizedBox(width: 5),
-                  Text(
-                    _placeName,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: "Poppins",
-                      color: Colors.grey[800],
+                  SizedBox(
+                    width: 150,
+                    child: Text(
+                      _placeName,
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: "Poppins",
+                          color: Colors.grey[800],
+                          overflow: TextOverflow.ellipsis),
                     ),
                   ),
                 ],

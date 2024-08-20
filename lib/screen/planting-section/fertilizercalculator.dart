@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mithran/models/cropstages.dart';
 import 'package:mithran/models/cropstagesbag.dart';
+import 'package:mithran/other/chat_bot.dart';
 import 'package:mithran/screen/market-section/productpage.dart';
 import '../../helpers/fertilizercalculatorhelp.dart';
 
@@ -668,7 +669,12 @@ class _FertilizerCalculatorState extends State<FertilizerCalculator> {
                   ),
             GestureDetector(
               onTap: () {
-                // Handle tap action here, e.g., navigate to personalized suggestions
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Chat(ongetBack: () {
+                              Navigator.pop(context);
+                            })));
               },
               child: Container(
                 padding: EdgeInsets.only(left: 25.0, right: 25.0),
