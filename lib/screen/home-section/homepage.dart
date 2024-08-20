@@ -4,6 +4,7 @@ import "package:flutter/material.dart";
 import 'package:intl/intl.dart';
 import 'package:mithran/repositories/weatherprovider.dart';
 import 'package:mithran/screen/home-section/weatherpage.dart';
+import 'package:mithran/screen/market-section/marketplace.dart';
 import 'package:mithran/widgets/initscan.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -70,7 +71,7 @@ class _HomePageState extends State<HomePage> {
         return entry.key;
       }
     }
-    return 'Sunny'; 
+    return 'Sunny';
   }
 
   @override
@@ -304,10 +305,21 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                       items: [
-                        Container(
-                          padding: EdgeInsets.only(left: 25.0, right: 25.0),
-                          child: Image.asset(
-                            "assets/homepage/Ayya1.png",
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Market(onReset: () {
+                                          widget.onReset();
+                                          Navigator.pop(context);
+                                        })));
+                          },
+                          child: Container(
+                            padding: EdgeInsets.only(left: 25.0, right: 25.0),
+                            child: Image.asset(
+                              "assets/homepage/Ayya1.png",
+                            ),
                           ),
                         ),
                         Container(

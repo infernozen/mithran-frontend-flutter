@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:mithran/models/marketdata.dart';
 import 'dart:async';
 import 'dart:convert';
-import '../models/marketdata.dart';
 import 'package:http/http.dart' as http;
 
 class MarketDataProvider extends ChangeNotifier {
   List<MarketData> marketDataList = [];
-  List<MarketData> originalMarketDataList = []; // To store the original data
+  List<MarketData> originalMarketDataList = [];
+  Map<String, List<double>> cityPriceMap = {};
+  Map<String, double> cityMeanPriceMap = {};
   bool isLoading = true;
 
   Future<void> fetchData(String commodity, String state) async {
@@ -19,21 +21,35 @@ class MarketDataProvider extends ChangeNotifier {
         'state': state,
       }));
 
-      print(response.statusCode);
-      print(response.body);
       if (response.statusCode == 200) {
         List<dynamic> data = jsonDecode(response.body);
         originalMarketDataList =
             data.map((json) => MarketData.fromJson(json)).toList();
-        marketDataList = List.from(
-            originalMarketDataList); // Initialize with the original data
+        marketDataList = List.from(originalMarketDataList);
+        for (var entry in marketDataList) {
+          String city = entry.city;
+          double price = double.tryParse(entry.modelPrice) ?? 0.0;
+
+          if (!cityPriceMap.containsKey(city)) {
+            cityPriceMap[city] = [];
+          }
+          cityPriceMap[city]!.add(price);
+        }
+        cityPriceMap.forEach((city, prices) {
+          double meanPrice = prices.reduce((a, b) => a + b) / prices.length;
+          cityMeanPriceMap[city] = meanPrice;
+        });
       } else {
         marketDataList.clear();
         originalMarketDataList.clear();
+        cityMeanPriceMap.clear();
+        cityPriceMap.clear();
       }
     } catch (e) {
       marketDataList.clear();
       originalMarketDataList.clear();
+      cityMeanPriceMap.clear();
+      cityPriceMap.clear();
       print("Error: $e");
     } finally {
       isLoading = false;
