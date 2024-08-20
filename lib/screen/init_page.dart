@@ -5,7 +5,8 @@ import 'package:mithran/screen/planting-section/soilhealth.dart';
 import 'planting-section/leafhealth.dart';
 
 class InitPage extends StatefulWidget {
-  InitPage({super.key});
+  int? index;
+  InitPage({super.key, this.index});
   @override
   _InitPageState createState() => _InitPageState();
 }
@@ -18,13 +19,18 @@ class _InitPageState extends State<InitPage> {
   void initState() {
     super.initState();
     _initPages();
+    setState(() {
+      currentPageIndex = widget.index ?? 0;
+    });
   }
 
   void _initPages() {
     _pages = [
       HomePage(onReset: onReset),
       SoilHealth(onReset: onReset),
-      LeafHealth(),
+      LeafHealth(
+        polygonId: '',
+      ),
       ExpenseTracker(onReset: onReset),
     ];
   }

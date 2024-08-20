@@ -183,7 +183,8 @@ import 'package:camera/camera.dart';
 import '../../screen/planting-section/leafhealthdisplay.dart';
 
 class CameraComponent extends StatefulWidget {
-  const CameraComponent({super.key});
+  final Function(int value) addNewReading;
+  CameraComponent({super.key, required this.addNewReading});
 
   @override
   _CameraComponentState createState() => _CameraComponentState();
@@ -229,6 +230,7 @@ class _CameraComponentState extends State<CameraComponent> {
         MaterialPageRoute(
           builder: (context) => LeafHealthDisplay(
             greenScore: greenScore,
+            addNewReading: (int value) => widget.addNewReading(value),
           ),
         ),
       );
@@ -251,7 +253,10 @@ class _CameraComponentState extends State<CameraComponent> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => LeafHealthDisplay(greenScore: greenScore),
+            builder: (context) => LeafHealthDisplay(
+              greenScore: greenScore,
+              addNewReading: (int value) => widget.addNewReading(value),
+            ),
           ),
         );
       }
@@ -322,7 +327,9 @@ class _CameraComponentState extends State<CameraComponent> {
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
                                 icon: const Icon(Icons.arrow_back_ios_new,
                                     color: Colors.white)),
                           ),
@@ -384,8 +391,8 @@ class _CameraComponentState extends State<CameraComponent> {
                 ],
               ),
             )
-          : const Center(
-              child: CircularProgressIndicator(),
+          : Container(
+              color: Colors.black,
             ),
     );
   }

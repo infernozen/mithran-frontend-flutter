@@ -5,6 +5,7 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mithran/data/data.dart';
+import 'package:mithran/field_locator.dart';
 import 'package:mithran/models/cropfield.dart';
 import 'package:mithran/models/trendingmodel.dart';
 import 'package:mithran/screen/planting-section/digitaltwin.dart';
@@ -295,7 +296,10 @@ class _SoilHealthState extends State<SoilHealth> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => LeafHealth()),
+                MaterialPageRoute(
+                    builder: (context) => LeafHealth(
+                          polygonId: "",
+                        )),
               );
             },
             child: Image.asset("assets/planting/navbaricon2.png",
@@ -889,7 +893,8 @@ class _SoilHealthState extends State<SoilHealth> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LeafHealth()));
+                                builder: (context) =>
+                                    LeafHealth(polygonId: "")));
                       },
                       child: Container(
                         padding: EdgeInsets.only(left: 25.0, right: 25.0),
@@ -1006,19 +1011,27 @@ class BottomSheet extends StatelessWidget {
                   }),
             ),
             const SizedBox(height: 20.0),
-            Container(
-              padding: EdgeInsets.only(left: 15.0),
-              child: Row(
-                children: [
-                  Icon(Icons.add, size: 30.0, color: Colors.blue),
-                  const SizedBox(width: 20.0),
-                  const Text("Add field",
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w600,
-                      )),
-                ],
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FieldLocator()),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.only(left: 15.0),
+                child: Row(
+                  children: [
+                    Icon(Icons.add, size: 30.0, color: Colors.blue),
+                    const SizedBox(width: 20.0),
+                    const Text("Add field",
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w600,
+                        )),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 20.0),
