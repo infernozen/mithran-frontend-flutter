@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mithran/screen/expense-section/cropexpensepage.dart';
+import 'package:mithran/screen/market-section/marketplace.dart';
 import 'package:mithran/widgets/charts/expensetrackerchart.dart';
 
 class ExpenseTracker extends StatefulWidget {
@@ -52,26 +53,25 @@ class _ExpenseTrackerState extends State<ExpenseTracker> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color(0xffE7F0FF),
+      backgroundColor: Color(0xffF6F5F3),
       appBar: AppBar(
-        leading: SizedBox(
-          child: IconButton(
-            icon: const Icon(
-              Icons.arrow_back_outlined,
-            ),
+        leading: IconButton(
+            icon: const Icon(Icons.chevron_left, size: 40),
             onPressed: () {
               widget.onReset();
-            },
-          ),
-        ),
+            }),
         title: const Text(
-          "Financial overview",
+          "Finances",
           style: TextStyle(
             fontFamily: "Poppins",
             fontSize: 20.0,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w600,
           ),
         ),
+        elevation: 2,
+        backgroundColor: Colors.white,
+        shadowColor: Colors.black,
+        titleSpacing: 0,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -79,11 +79,35 @@ class _ExpenseTrackerState extends State<ExpenseTracker> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(
+                  height: 30,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Market(onReset: () {
+                                  widget.onReset();
+                                  Navigator.pop(context);
+                                })));
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                    child: Image.asset(
+                      "assets/homepage/Ayya1.png",
+                    ),
+                  ),
+                ),
                 Container(
                   padding:
-                      const EdgeInsets.only(left: 15.0, right: 15.0, top: 15.0),
+                      const EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
                   child: Container(
                     decoration: BoxDecoration(
+                      border: Border.all(
+                        color: const Color(0xffD2D5DA),
+                        width: 2.0,
+                      ),
                       borderRadius: BorderRadius.circular(20.0),
                       color: Colors.white,
                     ),
@@ -99,6 +123,10 @@ class _ExpenseTrackerState extends State<ExpenseTracker> {
                       const EdgeInsets.only(top: 10.0, left: 15.0, right: 15.0),
                   child: Container(
                       decoration: BoxDecoration(
+                          border: Border.all(
+                            color: const Color(0xffD2D5DA),
+                            width: 2.0,
+                          ),
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20.0)),
                       child: Column(
@@ -147,6 +175,10 @@ class _ExpenseTrackerState extends State<ExpenseTracker> {
                   padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                   child: Container(
                     decoration: BoxDecoration(
+                      border: Border.all(
+                        color: const Color(0xffD2D5DA),
+                        width: 2.0,
+                      ),
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20.0),
                     ),
@@ -237,7 +269,7 @@ class _ExpenseTrackerState extends State<ExpenseTracker> {
                                         Container(
                                           padding: const EdgeInsets.all(10.0),
                                           decoration: BoxDecoration(
-                                            color: const Color(0xffD9D9D9),
+                                            color: const Color(0xffF6F5F3),
                                             borderRadius:
                                                 BorderRadius.circular(40.0),
                                           ),

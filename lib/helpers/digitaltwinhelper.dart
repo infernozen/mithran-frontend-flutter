@@ -20,7 +20,7 @@ Map<String, Map<String, Map<String, String>>> cropStageDetails = {
       "Actionable Insight":
           "Ensure consistent water supply to support grain filling and development. Apply additional potassium to enhance grain quality and yield. Monitor for signs of lodging and implement measures to prevent plant collapse. Regularly check for pests and diseases, and take corrective actions as needed to protect the crop during this critical stage."
     },
-    "Harvest Ready": {
+    "Harvest": {
       "Description": "Crop is ready to be harvested.",
       "Actionable Insight":
           "Monitor moisture levels in the grain to determine the optimal time for harvest. Ensure that harvesting equipment is in good condition to avoid losses. Prepare for post-harvest processing, including drying and storage, to maintain grain quality. Be aware of weather conditions to prevent delays and potential damage to the harvested crop."
@@ -47,7 +47,7 @@ Map<String, Map<String, Map<String, String>>> cropStageDetails = {
       "Actionable Insight":
           "Boost potassium levels to enhance sugar content and improve the overall quality of the harvested canes. Maintain consistent irrigation to support sugar accumulation. Monitor for any signs of stress or disease, and take appropriate measures to protect the crop. Prepare for harvest by checking the maturity of the canes."
     },
-    "Harvest Ready": {
+    "Harvest": {
       "Description": "Canes are mature and ready for harvest.",
       "Actionable Insight":
           "Assess the sugar content in the canes to determine the optimal harvest time. Prepare harvesting equipment and ensure it is well-maintained. Plan for post-harvest processing and transportation to minimize losses. Monitor weather conditions to avoid delays and potential damage to the harvested canes."
@@ -74,7 +74,7 @@ Map<String, Map<String, Map<String, String>>> cropStageDetails = {
       "Actionable Insight":
           "Ensure consistent water supply to support proper grain filling. Boost potassium levels to enhance grain quality and yield. Regularly inspect the crop for signs of stress or disease and take corrective actions as needed. Prepare for harvest by monitoring grain maturity and field conditions."
     },
-    "Harvest Ready": {
+    "Harvest": {
       "Description": "Rice is ready to be harvested.",
       "Actionable Insight":
           "Monitor grain moisture levels to determine the optimal harvest time. Prepare harvesting equipment and ensure it is ready for use. Plan for post-harvest processing and storage to maintain grain quality. Be mindful of weather conditions to avoid delays and potential damage to the harvested crop."
@@ -101,7 +101,7 @@ Map<String, Map<String, Map<String, String>>> cropStageDetails = {
       "Actionable Insight":
           "Boost potassium levels to enhance pod fill and seed quality. Maintain consistent water supply to support proper pod development. Monitor for signs of stress or disease and take corrective actions as necessary. Prepare for harvest by checking pod maturity and field conditions."
     },
-    "Harvest Ready": {
+    "Harvest": {
       "Description": "Soybeans are mature and ready for harvest.",
       "Actionable Insight":
           "Check pod firmness and moisture to determine the optimal harvest time. Prepare harvesting equipment and ensure it is in good working condition. Plan for post-harvest processing and storage to maintain seed quality. Be mindful of weather conditions to avoid delays and potential damage to the harvested crop."
@@ -128,7 +128,7 @@ Map<String, Map<String, Map<String, String>>> cropStageDetails = {
       "Actionable Insight":
           "Boost potassium levels to improve seed quality and yield. Ensure consistent water supply to support proper pod filling. Monitor for signs of stress or disease and take corrective actions as needed. Prepare for harvest by checking pod maturity and field conditions."
     },
-    "Harvest Ready": {
+    "Harvest": {
       "Description": "Mustard seeds are mature and ready for harvest.",
       "Actionable Insight":
           "Check seed dryness and pod maturity to determine the optimal harvest time. Prepare harvesting equipment and ensure it is in good working condition. Plan for post-harvest processing and storage to maintain seed quality. Be mindful of weather conditions to avoid delays and potential damage to the harvested crop."
@@ -155,7 +155,7 @@ Map<String, Map<String, Map<String, String>>> cropStageDetails = {
       "Actionable Insight":
           "Boost potassium levels to enhance fruit size and quality. Ensure consistent water supply and proper irrigation practices. Monitor for signs of stress or disease and take corrective actions as needed. Prepare for harvest by checking fruit maturity and field conditions."
     },
-    "Harvest Ready": {
+    "Harvest": {
       "Description": "Apples are ripe and ready to be harvested.",
       "Actionable Insight":
           "Check fruit color, firmness, and taste to determine the optimal harvest time. Prepare harvesting equipment and ensure it is in good working condition. Plan for post-harvest processing and storage to maintain fruit quality. Be mindful of weather conditions to avoid delays and potential damage to the harvested fruit."
@@ -182,7 +182,7 @@ Map<String, Map<String, Map<String, String>>> cropStageDetails = {
       "Actionable Insight":
           "Boost potassium levels to enhance fruit size and quality. Ensure consistent water supply and proper irrigation practices. Monitor for signs of stress or disease and take corrective actions as needed. Prepare for harvest by checking fruit maturity and plant conditions."
     },
-    "Harvest Ready": {
+    "Harvest": {
       "Description": "Bananas are mature and ready for harvest.",
       "Actionable Insight":
           "Check fruit size, color, and firmness to determine the optimal harvest time. Prepare harvesting equipment and ensure it is in good working condition. Plan for post-harvest processing and transportation to maintain fruit quality. Be mindful of weather conditions to avoid delays and potential damage to the harvested fruit."
@@ -209,7 +209,7 @@ Map<String, Map<String, Map<String, String>>> cropStageDetails = {
       "Actionable Insight":
           "Boost potassium levels to enhance pod fill and seed quality. Ensure consistent water supply to support proper pod development. Monitor for signs of stress or disease and take corrective actions as needed. Prepare for harvest by checking pod maturity and field conditions."
     },
-    "Harvest Ready": {
+    "Harvest": {
       "Description": "Beans are mature and ready to be harvested.",
       "Actionable Insight":
           "Check pod firmness and dryness to determine the optimal harvest time. Prepare harvesting equipment and ensure it is in good working condition. Plan for post-harvest processing and storage to maintain seed quality. Be mindful of weather conditions to avoid delays and potential damage to the harvested crop."
@@ -236,7 +236,7 @@ Map<String, Map<String, Map<String, String>>> cropStageDetails = {
       "Actionable Insight":
           "Boost potassium levels to enhance root quality and yield. Ensure consistent water supply to support proper root development. Monitor for signs of stress or disease and take corrective actions as needed. Prepare for harvest by checking root size and field conditions."
     },
-    "Harvest Ready": {
+    "Harvest": {
       "Description": "Carrots are mature and ready for harvest.",
       "Actionable Insight":
           "Check root size and firmness to determine the optimal harvest time. Prepare harvesting equipment and ensure it is in good working condition. Plan for post-harvest processing and storage to maintain root quality. Be mindful of weather conditions to avoid delays and potential damage to the harvested crop."
@@ -263,7 +263,7 @@ Map<String, Map<String, Map<String, String>>> cropStageDetails = {
       "Actionable Insight":
           "Boost potassium levels to enhance fruit quality and yield. Ensure consistent water supply and proper irrigation practices. Monitor for signs of stress or disease and take corrective actions as needed. Prepare for harvest by checking fruit maturity and plant conditions."
     },
-    "Harvest Ready": {
+    "Harvest": {
       "Description": "Coffee cherries are ripe and ready for harvest.",
       "Actionable Insight":
           "Check cherry color, firmness, and taste to determine the optimal harvest time. Prepare harvesting equipment and ensure it is in good working condition. Plan for post-harvest processing and storage to maintain fruit quality. Be mindful of weather conditions to avoid delays and potential damage to the harvested cherries."
@@ -290,7 +290,7 @@ Map<String, Map<String, Map<String, String>>> cropStageDetails = {
       "Actionable Insight":
           "Boost potassium levels to enhance ear development and kernel quality. Ensure consistent water supply and proper irrigation practices. Monitor for signs of stress or disease and take corrective actions as needed. Prepare for harvest by checking ear maturity and field conditions."
     },
-    "Harvest Ready": {
+    "Harvest": {
       "Description": "Corn is mature and ready for harvest.",
       "Actionable Insight":
           "Check kernel moisture and ear maturity to determine the optimal harvest time. Prepare harvesting equipment and ensure it is in good working condition. Plan for post-harvest processing and storage to maintain grain quality. Be mindful of weather conditions to avoid delays and potential damage to the harvested corn."
@@ -317,7 +317,7 @@ Map<String, Map<String, Map<String, String>>> cropStageDetails = {
       "Actionable Insight":
           "Boost potassium levels to enhance boll development and fiber quality. Ensure consistent water supply and proper irrigation practices. Monitor for signs of stress or disease and take corrective actions as needed. Prepare for harvest by checking boll maturity and plant conditions."
     },
-    "Harvest Ready": {
+    "Harvest": {
       "Description": "Cotton bolls are mature and ready for harvest.",
       "Actionable Insight":
           "Check boll opening and fiber quality to determine the optimal harvest time. Prepare harvesting equipment and ensure it is in good working condition. Plan for post-harvest processing and storage to maintain fiber quality. Be mindful of weather conditions to avoid delays and potential damage to the harvested cotton."
@@ -344,7 +344,7 @@ Map<String, Map<String, Map<String, String>>> cropStageDetails = {
       "Actionable Insight":
           "Boost potassium levels to enhance leaf quality and yield. Ensure consistent water supply and proper irrigation practices. Monitor for signs of stress or disease and take corrective actions as needed. Prepare for harvest by checking leaf maturity and plant conditions."
     },
-    "Harvest Ready": {
+    "Harvest": {
       "Description": "Tea leaves are mature and ready for harvest.",
       "Actionable Insight":
           "Check leaf color and texture to determine the optimal harvest time. Prepare harvesting equipment and ensure it is in good working condition. Plan for post-harvest processing and storage to maintain leaf quality. Be mindful of weather conditions to avoid delays and potential damage to the harvested leaves."
@@ -371,7 +371,7 @@ Map<String, Map<String, Map<String, String>>> cropStageDetails = {
       "Actionable Insight":
           "Boost potassium levels to enhance bulb size and quality. Ensure consistent water supply and proper irrigation practices. Monitor for signs of stress or disease and take corrective actions as needed. Prepare for harvest by checking bulb maturity and field conditions."
     },
-    "Harvest Ready": {
+    "Harvest": {
       "Description": "Onions are mature and ready for harvest.",
       "Actionable Insight":
           "Check bulb size and firmness to determine the optimal harvest time. Prepare harvesting equipment and ensure it is in good working condition. Plan for post-harvest processing and storage to maintain bulb quality. Be mindful of weather conditions to avoid delays and potential damage to the harvested onions."
@@ -398,7 +398,7 @@ Map<String, Map<String, Map<String, String>>> cropStageDetails = {
       "Actionable Insight":
           "Boost potassium levels to enhance tuber size and quality. Ensure consistent water supply and proper irrigation practices. Monitor for signs of stress or disease and take corrective actions as needed. Prepare for harvest by checking tuber maturity and field conditions."
     },
-    "Harvest Ready": {
+    "Harvest": {
       "Description": "Potatoes are mature and ready for harvest.",
       "Actionable Insight":
           "Check tuber size and firmness to determine the optimal harvest time. Prepare harvesting equipment and ensure it is in good working condition. Plan for post-harvest processing and storage to maintain tuber quality. Be mindful of weather conditions to avoid delays and potential damage to the harvested potatoes."
@@ -425,7 +425,7 @@ Map<String, Map<String, Map<String, String>>> cropStageDetails = {
       "Actionable Insight":
           "Boost potassium levels to enhance fruit size and quality. Ensure consistent water supply and proper irrigation practices. Monitor for signs of stress or disease and take corrective actions as needed. Prepare for harvest by checking fruit maturity and plant conditions."
     },
-    "Harvest Ready": {
+    "Harvest": {
       "Description": "Tomatoes are ripe and ready for harvest.",
       "Actionable Insight":
           "Check fruit color, firmness, and taste to determine the optimal harvest time. Prepare harvesting equipment and ensure it is in good working condition. Plan for post-harvest processing and storage to maintain fruit quality. Be mindful of weather conditions to avoid delays and potential damage to the harvested tomatoes."

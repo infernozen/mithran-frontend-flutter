@@ -22,7 +22,7 @@ String getCropStage(int daysSinceSowing, int harvestDays) {
   if (daysSinceSowing < harvestDays * 0.4) return "Vegetative";
   if (daysSinceSowing < harvestDays * 0.7) return "Flowering";
   if (daysSinceSowing < harvestDays) return "Fruiting";
-  return "Harvest Ready";
+  return "Harvest";
 }
 
 CropStage getCurrentStage(String crop, DateTime sowingDate) {

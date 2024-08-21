@@ -217,7 +217,7 @@ class _WeatherPageState extends State<WeatherPage> {
                               ),
                               const Padding(
                                   padding: EdgeInsets.only(
-                                      left: 20.0, top: 40.0, bottom: 10.0),
+                                      left: 15.0, top: 40.0, bottom: 10.0),
                                   child: Text(
                                     "Hourly Forecast",
                                     style: TextStyle(
@@ -277,15 +277,15 @@ class _WeatherPageState extends State<WeatherPage> {
                                   },
                                 ),
                               ),
-                              const SizedBox(height: 10.0),
+                              const SizedBox(height: 20.0),
                               const Padding(
                                 padding:
-                                    EdgeInsets.only(left: 25.0, bottom: 10.0),
+                                    EdgeInsets.only(left: 15.0, bottom: 10.0),
                                 child: Text("Temperature",
                                     style: TextStyle(
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 16.0)),
+                                        fontSize: 20.0)),
                               ),
                               ConstructBarChart(
                                   timeArr: timeArr,

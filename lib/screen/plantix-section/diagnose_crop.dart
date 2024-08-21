@@ -313,7 +313,7 @@ class _DiagnoseCropState extends State<DiagnoseCrop> {
                                   ),
                                 ),
                                 child: const Text(
-                                  "see treatment",
+                                  "See treatment",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,
@@ -434,7 +434,7 @@ class _DiagnoseCropState extends State<DiagnoseCrop> {
                                         text: "Click here to ask ",
                                       ),
                                       TextSpan(
-                                        text: "Uzhalavan",
+                                        text: "Uzhlavan",
                                         style: TextStyle(
                                           fontWeight: FontWeight.w700,
                                         ),

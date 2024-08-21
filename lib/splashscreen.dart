@@ -46,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.didChangeDependencies();
 
     final dataProvider = Provider.of<WeatherProvider>(context, listen: false);
-    dataProvider.fetchWeatherData("13.041664", "80.2095104").then((_) {
+    dataProvider.fetchWeatherData("28.4164096", "77.0932736").then((_) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => InitPage()),

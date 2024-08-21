@@ -98,6 +98,7 @@ class _LeafHealthState extends State<LeafHealth> {
           "Leaf Health Monitor",
           style: TextStyle(
             fontFamily: "Poppins",
+            fontSize: 20,
             fontWeight: FontWeight.w600,
           ),
         ),

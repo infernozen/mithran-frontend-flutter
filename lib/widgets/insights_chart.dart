@@ -106,18 +106,14 @@ class _GraphComponentState extends State<GraphComponent>
     return Center(
       child: Container(
         height: containerHeight,
-        width: MediaQuery.of(context).size.width * 0.9,
+        width: MediaQuery.of(context).size.width * 0.92,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 10,
-              spreadRadius: 5,
-              offset: Offset(0, 5),
-            ),
-          ],
+          border: Border.all(
+            color: const Color(0xffD2D5DA),
+            width: 2.0,
+          ),
         ),
         child: Column(
           children: <Widget>[

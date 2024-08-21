@@ -399,7 +399,7 @@ class DigitalTwin extends StatelessWidget {
                                     text: "Click here to ask ",
                                   ),
                                   TextSpan(
-                                    text: "Uzhalavan",
+                                    text: "Uzhlavan",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                     ),

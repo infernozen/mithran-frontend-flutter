@@ -103,7 +103,7 @@ class _ChatState extends State<Chat> {
         title: Row(
           children: [
             const Text(
-              'Chat with Uzhalavan',
+              'Chat with Uzhlavan',
               style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'Poppins',
@@ -171,7 +171,7 @@ class _ChatState extends State<Chat> {
                           filled: true,
                           fillColor: Colors.transparent,
                           border: InputBorder.none,
-                          hintText: "Ask Uzhalavan",
+                          hintText: "Ask Uzhlavan",
                           hintStyle: TextStyle(
                             fontFamily: 'Poppins',
                             fontSize: 17,

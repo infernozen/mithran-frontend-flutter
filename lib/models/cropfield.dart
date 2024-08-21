@@ -6,7 +6,8 @@ class CropField {
       required this.Crop,
       required this.latitude,
       required this.longitude,
-      required this.polygonLatLngs});
+      required this.polygonLatLngs,
+      required this.sowedDate});
 
   final String fieldName;
   final double fieldSize;
@@ -15,4 +16,5 @@ class CropField {
   final double latitude;
   final double longitude;
   final List<List<double>> polygonLatLngs;
+  final DateTime sowedDate;
 }

@@ -34,8 +34,6 @@ class _SoilHealthState extends State<SoilHealth> {
   int selectedIndex = 0;
   List<String> fields = [];
   List<CropField> cropFieldList = [];
-  DateTime sowedDate =
-      DateTime(2024, 5, 24); // sowed date should be from the data Rosan to do
   GlobalKey<FlipCardState> sowedCardKey = GlobalKey<FlipCardState>();
   GlobalKey<FlipCardState> stageCardKey = GlobalKey<FlipCardState>();
   GlobalKey<FlipCardState> harvestCardKey = GlobalKey<FlipCardState>();
@@ -60,7 +58,8 @@ class _SoilHealthState extends State<SoilHealth> {
           Crop: fieldData[i]['Crop'],
           latitude: fieldData[i]['currentLocation']['latitude'],
           longitude: fieldData[i]['currentLocation']['longitude'],
-          polygonLatLngs: fieldData[i]['polygonLatLngs']));
+          polygonLatLngs: fieldData[i]['polygonLatLngs'],
+          sowedDate: DateTime.parse(fieldData[i]['sowedDate'])));
     }
   }
 
@@ -85,6 +84,7 @@ class _SoilHealthState extends State<SoilHealth> {
               selectedField = field;
               selectedCrop = crop;
               selectedIndex = index;
+              stage = getCurrentStage(crop, cropFieldList[index].sowedDate);
             });
           },
         );
@@ -110,24 +110,64 @@ class _SoilHealthState extends State<SoilHealth> {
         "latitude": 12.752739586998171
       },
       "Crop": "Wheat",
+      "sowedDate": "2024-07-15",
     },
     {
-      "polygonId": "66c1de28287b0e0f94fd16a9",
-      "fieldName": "Krishna's Farm Field",
-      "fieldSize": "4.34",
+      "polygonId": "66c57aed93997d119bbff7bd",
+      "fieldName": "Resting Ground",
+      "fieldSize": "3.75",
       "polygonLatLngs": [
-        [12.753240558862867, 80.19547026604414],
-        [12.753617595128063, 80.19684556871653],
-        [12.752493351769175, 80.19731160253286],
-        [12.75165425355935, 80.19599329680204],
-        [12.753240558862867, 80.19547026604414]
+        [27.019364245047697, 74.22480627894402],
+        [27.02036183768475, 74.22499235719442],
+        [27.020580470576324, 74.22630429267883],
+        [27.019926960067338, 74.22672104090452],
+        [27.019364245047697, 74.22480627894402]
       ],
-      "location": "netaji street",
+      "location": "Unnamed Road, Nagaur, India",
       "currentLocation": {
-        "longitude": 77.22556264045598,
-        "latitude": 28.589714338352536
+        "longitude": 74.22576282173395,
+        "latitude": 27.020771325990413
       },
-      "Crop": "Rice",
+      "Crop": "Tomato",
+      "sowedDate": "2024-06-15",
+    },
+    {
+      "polygonId": "66a13707402635077c2ecc1d",
+      "fieldName": "Fertile Land",
+      "fieldSize": "4.52",
+      "polygonLatLngs": [
+        [10.030366656318154, 77.93302059173584],
+        [10.03119368508608, 77.93392583727837],
+        [10.03055583314474, 77.9347700625658],
+        [10.02947491554837, 77.93392583727837],
+        [10.030366656318154, 77.93302059173584]
+      ],
+      "location": "Unnamed Road, Madurai, India",
+      "currentLocation": {
+        "longitude": 77.93423227965832,
+        "latitude": 10.031848373427708
+      },
+      "Crop": "Wheat",
+      "sowedDate": "2024-04-15",
+    },
+    {
+      "polygonId": "66c5868293997d7031bff7bf",
+      "fieldName": "Munaar Tea estate",
+      "fieldSize": "4.00",
+      "polygonLatLngs": [
+        [10.087992788214203, 77.05236084759235],
+        [10.087491707064084, 77.05230351537466],
+        [10.087399280943309, 77.0538179576397],
+        [10.088495849137962, 77.05432489514351],
+        [10.087992788214203, 77.05236084759235]
+      ],
+      "location": "33Q4+C82, Munnar, India",
+      "currentLocation": {
+        "longitude": 77.05338075757027,
+        "latitude": 10.087963740052883
+      },
+      "Crop": "Tea",
+      "sowedDate": "2024-05-15",
     }
   ];
 
@@ -136,7 +176,7 @@ class _SoilHealthState extends State<SoilHealth> {
     if (daysSinceSowing < harvestDays * 0.4) return "Vegetative";
     if (daysSinceSowing < harvestDays * 0.7) return "Flowering";
     if (daysSinceSowing < harvestDays) return "Fruiting";
-    return "Harvest Ready";
+    return "Harvest";
   }
 
   CropStage getCurrentStage(String crop, DateTime sowingDate) {
@@ -176,7 +216,8 @@ class _SoilHealthState extends State<SoilHealth> {
     formFieldList();
     selectedField = fields.first;
     selectedCrop = crops.first;
-    stage = getCurrentStage(selectedCrop, sowedDate);
+    stage =
+        getCurrentStage(selectedCrop, cropFieldList[selectedIndex].sowedDate);
     print(stage);
     Timer.periodic(Duration(seconds: 5), (timer) {
       if (!sowedCardKey.currentState!.isFront) {
@@ -208,6 +249,7 @@ class _SoilHealthState extends State<SoilHealth> {
         title: Container(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
+              overlayColor: Colors.white,
               surfaceTintColor: Colors.white,
               backgroundColor: Colors.transparent,
               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
@@ -264,8 +306,8 @@ class _SoilHealthState extends State<SoilHealth> {
                 MaterialPageRoute(
                     builder: (context) => FertilizerCalculator(
                         fieldSize: cropFieldList[selectedIndex].fieldSize,
-                        sowedDate:
-                            DateFormat("d'th' MMM yyyy").format(sowedDate),
+                        sowedDate: DateFormat("d'th' MMM yyyy")
+                            .format(cropFieldList[selectedIndex].sowedDate),
                         crop: cropFieldList[selectedIndex].Crop)),
               );
             },
@@ -283,8 +325,8 @@ class _SoilHealthState extends State<SoilHealth> {
                           currentStage: stage.stage,
                           expectedHarvestDate: DateFormat("d'th' MMM yyyy")
                               .format(stage.expectedHarvest),
-                          sowedDate:
-                              DateFormat("d'th' MMM yyyy").format(sowedDate),
+                          sowedDate: DateFormat("d'th' MMM yyyy")
+                              .format(cropFieldList[selectedIndex].sowedDate),
                         )),
               );
             },
@@ -332,7 +374,7 @@ class _SoilHealthState extends State<SoilHealth> {
                       longitude: cropFieldList[selectedIndex].longitude,
                       place: cropFieldList[selectedIndex].location,
                     )),
-                    const SizedBox(height: 10.0),
+                    const SizedBox(height: 15.0),
                     Container(
                       padding: EdgeInsets.only(left: 15.0, right: 8.0),
                       child: Row(
@@ -436,7 +478,7 @@ class _SoilHealthState extends State<SoilHealth> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10.0),
+                    const SizedBox(height: 15.0),
                     Container(
                       padding: EdgeInsets.only(left: 10.0, right: 10.0),
                       child: Row(
@@ -479,7 +521,7 @@ class _SoilHealthState extends State<SoilHealth> {
                                 padding: EdgeInsets.only(top: 10.0),
                                 child: Text(
                                   textAlign: TextAlign.center,
-                                  "${DateFormat("d'th' MMM yyyy").format(sowedDate)}",
+                                  "${DateFormat("d'th' MMM yyyy").format(cropFieldList[selectedIndex].sowedDate)}",
                                   style: TextStyle(
                                     fontFamily: "Poppins",
                                     fontWeight: FontWeight.w500,
@@ -596,7 +638,7 @@ class _SoilHealthState extends State<SoilHealth> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 20.0),
+                    const SizedBox(height: 10.0),
                   ]),
                 ),
               ),
@@ -632,8 +674,12 @@ class _SoilHealthState extends State<SoilHealth> {
               Container(
                 padding: EdgeInsets.only(left: 15.0, right: 15.0),
                 child: Container(
-                  padding: EdgeInsets.all(15.0),
+                  padding: EdgeInsets.all(13.0),
                   decoration: BoxDecoration(
+                    border: Border.all(
+                      color: const Color(0xffD2D5DA),
+                      width: 2.0,
+                    ),
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10.0),
                   ),
@@ -854,7 +900,8 @@ class _SoilHealthState extends State<SoilHealth> {
                                       fieldSize: cropFieldList[selectedIndex]
                                           .fieldSize,
                                       sowedDate: DateFormat("d'th' MMM yyyy")
-                                          .format(sowedDate),
+                                          .format(cropFieldList[selectedIndex]
+                                              .sowedDate),
                                       crop: cropFieldList[selectedIndex].Crop,
                                     )));
                       },
@@ -877,7 +924,8 @@ class _SoilHealthState extends State<SoilHealth> {
                                         DateFormat("d'th' MMM yyyy")
                                             .format(stage.expectedHarvest),
                                     sowedDate: DateFormat("d'th' MMM yyyy")
-                                        .format(sowedDate),
+                                        .format(cropFieldList[selectedIndex]
+                                            .sowedDate),
                                   )),
                         );
                       },
