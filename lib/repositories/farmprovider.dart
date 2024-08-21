@@ -94,7 +94,7 @@ class FarmProvider extends ChangeNotifier {
           dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
           dateOnly = DateTime(dateTime.year, dateTime.month, dateTime.day);
           double? rain = daily[i]["rain"];
-          double rainValue = rain ?? 2.24;
+          double rainValue = rain ?? 2.24 + 0.0;
           // print(rainValue);
           // print({
           //   'rain': rainValue,

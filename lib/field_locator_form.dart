@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
+import 'package:intl/intl.dart';
 import 'package:mithran/polygon_mapper.dart';
 import 'package:mithran/screen/init_page.dart';
 import 'package:mithran/utils/snackbar.dart';
@@ -21,7 +22,45 @@ class FieldLocatorForm extends StatefulWidget {
 class _FieldLocatorFormState extends State<FieldLocatorForm> {
   TextEditingController fieldName = TextEditingController();
   TextEditingController fieldSize = TextEditingController();
+  TextEditingController selectedCrop = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  DateTime? _selectedDate;
   List<google_maps.LatLng> _polygonLatLngs = [];
+
+  void _selectDate() async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate ?? DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null && pickedDate != _selectedDate) {
+      setState(() {
+        _selectedDate = pickedDate;
+        _dateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+      });
+    }
+  }
+
+  List<String> cropList = [
+    "Wheat",
+    "Sugarcane",
+    "Rice",
+    "Soyabean",
+    "Mustard",
+    "Apple",
+    "Banana",
+    "Beans",
+    "Carrot",
+    "Coffee",
+    "Maize",
+    "Cotton",
+    "Tea",
+    "Onion",
+    "Potato",
+    "Tomato"
+  ];
 
   @override
   void initState() {
@@ -87,8 +126,8 @@ class _FieldLocatorFormState extends State<FieldLocatorForm> {
               'longitude': widget.currentLocation.longitude,
               'latitude': widget.currentLocation.latitude,
             },
-            'Crop': 'Wheat',
-            'sowedDate': '2024-05-15'
+            'Crop': selectedCrop.text,
+            'sowedDate': _dateController.text,
           };
           await storePolygonData(polygonData);
           Navigator.pushReplacement(
@@ -266,7 +305,6 @@ class _FieldLocatorFormState extends State<FieldLocatorForm> {
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
-                    readOnly: true,
                     initialValue: widget.location,
                     style: const TextStyle(
                         fontFamily: "Poppins",
@@ -410,6 +448,180 @@ class _FieldLocatorFormState extends State<FieldLocatorForm> {
                           ),
                         )
                       ],
+                    ),
+                  if (fieldSize.value.text != "")
+                    Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: Autocomplete<String>(
+                          optionsMaxHeight: 50,
+                          optionsViewBuilder: (context, onSelected, options) {
+                            return Container(
+                              width: 100,
+                              child: Material(
+                                elevation: 0,
+                                type: MaterialType.transparency,
+                                textStyle: const TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontSize: 14,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 90.0),
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: options.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      final option = options.elementAt(index);
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border(
+                                            bottom: BorderSide(
+                                              color: Colors.grey[300]!,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                        ),
+                                        child: ListTile(
+                                          title: Text(option),
+                                          onTap: () {
+                                            onSelected(option);
+                                          },
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          optionsBuilder: (TextEditingValue textEditingValue) {
+                            if (textEditingValue.text.isEmpty) {
+                              return const Iterable<String>.empty();
+                            }
+                            return cropList.where((String crop) {
+                              return crop.toLowerCase().contains(
+                                  textEditingValue.text.toLowerCase());
+                            });
+                          },
+                          fieldViewBuilder: (BuildContext context,
+                              TextEditingController selectedCrop,
+                              FocusNode focusNode,
+                              VoidCallback onFieldSubmitted) {
+                            return TextFormField(
+                              controller: selectedCrop,
+                              focusNode: focusNode,
+                              decoration: InputDecoration(
+                                labelText: "Crop",
+                                labelStyle: const TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontSize: 14,
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                hintStyle: const TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontSize: 16,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: const BorderSide(
+                                    color: Color.fromRGBO(89, 89, 89, 1),
+                                    width: 1.0,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: const BorderSide(
+                                    color: Color.fromRGBO(89, 89, 89, 1),
+                                    width: 1.0,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: const BorderSide(
+                                    color: Color.fromRGBO(89, 89, 89, 1),
+                                    width: 1.0,
+                                  ),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 16.0,
+                                  horizontal: 12.0,
+                                ),
+                              ),
+                              style: const TextStyle(
+                                fontFamily: "Poppins",
+                                fontSize: 16,
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w600,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              onFieldSubmitted: (value) => onFieldSubmitted(),
+                            );
+                          },
+                          onSelected: (String selection) {
+                            selectedCrop.text = selection;
+                          },
+                        )),
+                  if (fieldSize.value.text != "")
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: TextFormField(
+                        controller: _dateController,
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: "Sowed Date",
+                          labelStyle: const TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 14,
+                            color: Colors.black54,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          hintStyle: const TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 16,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: const BorderSide(
+                              color: Color.fromRGBO(89, 89, 89, 1),
+                              width: 1.0,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: const BorderSide(
+                              color: Color.fromRGBO(89, 89, 89, 1),
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: const BorderSide(
+                              color: Color.fromRGBO(89, 89, 89, 1),
+                              width: 1.0,
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 16.0,
+                            horizontal: 12.0,
+                          ),
+                        ),
+                        onTap: _selectDate,
+                        style: const TextStyle(
+                          fontFamily: "Poppins",
+                          fontSize: 16,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w600,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ),
                   if (fieldSize.value.text == "") const SizedBox(height: 16),
                   if (fieldSize.value.text == "")

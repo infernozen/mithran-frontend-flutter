@@ -109,8 +109,6 @@ String getMithranScoreCondition(mithranScore) {
 Map<String, String> generateCropHealthInsight(Map<String, dynamic> dayData) {
   // Extract necessary attributes
   double dayTemp = dayData['dayTemp'];
-  double minTemp = dayData['minTemp'];
-  double nightTemp = dayData['nightTemp'];
   int humidity = dayData['humidity'];
   double rain = dayData['rain'] ?? 2.24;
   int pressure = dayData['pressure'];
@@ -183,7 +181,6 @@ Map<String, String> generateCropHealthInsight(Map<String, dynamic> dayData) {
               "The absence of rain may require you to increase irrigation to maintain soil moisture. Check soil moisture levels regularly and adjust your watering schedule accordingly. Monitor crops for signs of drought stress, such as wilting or reduced growth."
         };
       }
-      break;
 
     case 2: // Humidity insights
       if (humidity > 90) {
@@ -217,7 +214,6 @@ Map<String, String> generateCropHealthInsight(Map<String, dynamic> dayData) {
               "Very low humidity can significantly affect plant health by causing excessive water loss. Increase irrigation frequency and consider using humidifiers or misting systems to help maintain adequate moisture levels around plants. Regularly check plants for signs of stress and adjust care accordingly."
         };
       }
-      break;
 
     case 3: // Pressure insights
       if (pressure < 1000) {
