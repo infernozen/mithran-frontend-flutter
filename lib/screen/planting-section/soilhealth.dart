@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:core';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flip_card/flip_card.dart';
@@ -12,6 +13,7 @@ import 'package:mithran/screen/planting-section/digitaltwin.dart';
 import 'package:mithran/screen/planting-section/fertilizercalculator.dart';
 import 'package:mithran/screen/planting-section/leafhealth.dart';
 import 'package:mithran/widgets/insights_chart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../models/insightmodel.dart';
@@ -82,7 +84,6 @@ class _SoilHealthState extends State<SoilHealth> {
           Crop: fieldData[i]['Crop'],
           latitude: fieldData[i]['currentLocation']['latitude'],
           longitude: fieldData[i]['currentLocation']['longitude'],
-          polygonLatLngs: fieldData[i]['polygonLatLngs'],
           sowedDate: DateTime.parse(fieldData[i]['sowedDate'])));
     }
   }
@@ -121,7 +122,26 @@ class _SoilHealthState extends State<SoilHealth> {
     );
   }
 
-  static const fieldData = [
+  static List<Map<String, dynamic>> fieldData = [
+    {
+      "polygonId": "66c1de28287b0e0f94fd16a9",
+      "fieldName": "Rosan's Farm Field",
+      "fieldSize": "6.34",
+      "polygonLatLngs": [
+        [12.753240558862867, 80.19547026604414],
+        [12.753617595128063, 80.19684556871653],
+        [12.752493351769175, 80.19731160253286],
+        [12.75165425355935, 80.19599329680204],
+        [12.753240558862867, 80.19547026604414]
+      ],
+      "location": "SSN Cricket Ground Road, Kalavakkam, Tamil Nadu, India",
+      "currentLocation": {
+        "longitude": 80.19634500145912,
+        "latitude": 12.752739586998171
+      },
+      "Crop": "Wheat",
+      "sowedDate": "2024-07-15",
+    },
     {
       "polygonId": "66c57aed93997d119bbff7bd",
       "fieldName": "Resting Ground",
@@ -181,6 +201,40 @@ class _SoilHealthState extends State<SoilHealth> {
     }
   ];
 
+  Future<void> _initializeFieldData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Retrieve the existing fieldDataList from SharedPreferences
+    List<String>? savedFieldDataList = prefs.getStringList('fieldDataList');
+
+    if (savedFieldDataList != null) {
+      List savedFieldData = savedFieldDataList.map((jsonString) {
+        return jsonDecode(jsonString);
+      }).toList();
+
+      setState(() {
+        for (var newField in savedFieldData) {
+          bool alreadyExists = fieldData
+              .any((field) => field['polygonId'] == newField['polygonId']);
+          if (!alreadyExists) {
+            fieldData.add(newField);
+            cropFieldList.clear();
+            fieldDecodeJson(cropFieldList, fieldData);
+            fields.clear();
+            crops.clear();
+            formFieldList();
+          }
+        }
+      });
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _initializeFieldData();
+  }
+
   String getCropStage(int daysSinceSowing, int harvestDays) {
     if (daysSinceSowing < harvestDays * 0.2) return "Germination";
     if (daysSinceSowing < harvestDays * 0.4) return "Vegetative";
@@ -237,13 +291,17 @@ class _SoilHealthState extends State<SoilHealth> {
   void initState() {
     super.initState();
     trendingDecodeJson(trendData, trendingData);
+    print(fieldData);
     fieldDecodeJson(cropFieldList, fieldData);
+    _initializeFieldData();
     formFieldList();
     formInsightList(soilInsights);
     selectedField = fields.first;
     selectedCrop = crops.first;
     stage =
         getCurrentStage(selectedCrop, cropFieldList[selectedIndex].sowedDate);
+    print(stage);
+    print(fieldData);
     Timer.periodic(Duration(seconds: 5), (timer) {
       if (!sowedCardKey.currentState!.isFront) {
         sowedCardKey.currentState!.toggleCard();
@@ -422,7 +480,7 @@ class _SoilHealthState extends State<SoilHealth> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                "Virtual Form",
+                                "Virtual Farm",
                                 style: TextStyle(
                                   fontFamily: "Poppins",
                                   fontSize: 18.0,
