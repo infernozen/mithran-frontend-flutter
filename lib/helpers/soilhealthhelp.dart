@@ -110,10 +110,9 @@ Map<String, String> generateCropHealthInsight(Map<String, dynamic> dayData) {
   // Extract necessary attributes
   double dayTemp = dayData['dayTemp'];
   double minTemp = dayData['minTemp'];
-  double maxTemp = dayData['maxTemp'];
   double nightTemp = dayData['nightTemp'];
   int humidity = dayData['humidity'];
-  double rain = dayData['rain'];
+  double rain = dayData['rain'] ?? 2.24;
   int pressure = dayData['pressure'];
 
   // Initialize random number generator

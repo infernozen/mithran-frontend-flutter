@@ -96,7 +96,6 @@ class FarmProvider extends ChangeNotifier {
           double? rain = daily[i]["rain"];
           double rainValue = rain ?? 2.24;
           // print(rainValue);
-
           // print({
           //   'rain': rainValue,
           //   'humidity': daily[i]["humidity"],
@@ -139,11 +138,10 @@ class FarmProvider extends ChangeNotifier {
         };
         print(weatherData);
       }
-    } catch (e) {
-      print("Error: $e");
-    } finally {
       isLoading = false;
       notifyListeners();
-    }
+    } catch (e) {
+      print("Error: $e");
+    } finally {}
   }
 }
