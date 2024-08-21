@@ -30,13 +30,61 @@ class DiagnoseCrop extends StatefulWidget {
 }
 
 class _DiagnoseCropState extends State<DiagnoseCrop> {
+  String lang = 'en';
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final dataProvider = Provider.of<PlantixService>(context, listen: false);
-      dataProvider.uploadImage(widget.image);
+      dataProvider.uploadImage(widget.image, 'en');
     });
+  }
+
+  void _showLanguageSelector(dataProvider) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: const Text('English'),
+                onTap: () {
+                  setState(() {
+                    lang = 'en';
+                    dataProvider.uploadImage(widget.image, lang);
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: const Text('Tamil'),
+                onTap: () {
+                  setState(() {
+                    lang = 'ta';
+                  });
+                  Navigator.pop(context);
+                  dataProvider.uploadImage(widget.image, lang);
+                },
+              ),
+              ListTile(
+                title: const Text('Hindi'),
+                onTap: () {
+                  setState(() {
+                    lang = 'hi';
+                    dataProvider.uploadImage(widget.image, lang);
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -45,6 +93,16 @@ class _DiagnoseCropState extends State<DiagnoseCrop> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+              icon: const Icon(Icons.filter_frames, size: 28),
+              onPressed: () {
+                _showLanguageSelector(dataProvider);
+              }),
+          SizedBox(
+            width: 10,
+          )
+        ],
         leading: IconButton(
             icon: const Icon(Icons.chevron_left, size: 40),
             onPressed: () {
@@ -179,8 +237,8 @@ class _DiagnoseCropState extends State<DiagnoseCrop> {
                                     width: double.infinity,
                                     height: size.height * 0.22,
                                     child: ListView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
+                                      // physics:
+                                      //     const NeverScrollableScrollPhysics(),
                                       itemCount: dataProvider.symptoms.length,
                                       itemBuilder: (context, index) {
                                         return ListTile(

@@ -16,10 +16,14 @@ class PlantixService extends ChangeNotifier {
   bool isHealthy = false;
   bool isNotFound = true;
 
-  Future<void> uploadImage(XFile imageFile) async {
+  Future<void> uploadImage(XFile imageFile, String lang) async {
+    isLoading = true;
+    isHealthy = false;
+    isNotFound = true;
+    notifyListeners();
     final uri = Uri.parse(_apiUrl);
     final request = http.MultipartRequest('POST', uri);
-
+    request.headers['accept-Language'] = lang;
     try {
       final file = File(imageFile.path);
       request.files.add(await http.MultipartFile.fromPath('image', file.path));
@@ -34,7 +38,7 @@ class PlantixService extends ChangeNotifier {
         final predictedDiagnoses =
             parsedData['predicted_diagnoses'] as List<dynamic>?;
 
-        if (parsedData['crop_health'].compareTo("unknown")==0) {
+        if (parsedData['crop_health'].compareTo("unknown") == 0) {
           isNotFound = true;
         } else {
           isNotFound = false;
@@ -52,6 +56,7 @@ class PlantixService extends ChangeNotifier {
               imageReferences.add(item);
             });
             final symptom = firstDiagnosis['symptoms_short'];
+            symptoms.clear();
             symptom.forEach((element) {
               symptoms.add(element);
             });
