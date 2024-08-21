@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 import 'package:mithran/polygon_mapper.dart';
+import 'package:mithran/screen/init_page.dart';
 import 'package:mithran/utils/snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -49,6 +50,14 @@ class _FieldLocatorFormState extends State<FieldLocatorForm> {
     });
   }
 
+  Future<void> storePolygonData(Map<String, dynamic> polygonData) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String jsonString = jsonEncode(polygonData);
+    List<String> fieldDataList = prefs.getStringList('fieldDataList') ?? [];
+    fieldDataList.add(jsonString);
+    await prefs.setStringList('fieldDataList', fieldDataList);
+  }
+
   Future<void> addField() async {
     if (fieldName.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(buildCustomSnackBar(
@@ -58,21 +67,9 @@ class _FieldLocatorFormState extends State<FieldLocatorForm> {
       return;
     }
     if (double.parse(fieldSize.text) > 2.5) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      List<String> polygonIds = prefs.getStringList('polygonIds') ?? [];
-      Map<String, dynamic> polygonData = {
-        'fieldName': fieldName.text,
-        'fieldSize': fieldSize.text,
-        'polygonLatLngs': _polygonLatLngs,
-        'location': widget.location,
-        'currentLocation': {
-          'longitude': widget.currentLocation.longitude,
-          'latitude': widget.currentLocation.latitude,
-        },
-        'Crop': ''
-      };
       const baseUrl = "http://35.208.131.250:5000/soil/newPolyID";
       final encodedCoordinates = convertLatLngToCoordinates(_polygonLatLngs);
+      print(encodedCoordinates);
       final url =
           "$baseUrl?name=${Uri.encodeComponent(fieldName.text)}&coordinates=$encodedCoordinates";
       try {
@@ -80,12 +77,28 @@ class _FieldLocatorFormState extends State<FieldLocatorForm> {
 
         if (response.statusCode == 200) {
           Map<String, dynamic> res = jsonDecode(response.body);
-          polygonIds.add(res['id']);
-          print(polygonIds);
-          await prefs.setStringList('polygonIds', polygonIds);
-          String polygonDataString = jsonEncode(polygonData);
-          await prefs.setString("Poly_${res['id']}", polygonDataString);
-          print(polygonDataString);
+          Map<String, dynamic> polygonData = {
+            'polygonId': res['id'],
+            'fieldName': fieldName.text,
+            'fieldSize': fieldSize.text,
+            'polygonLatLngs': _polygonLatLngs,
+            'location': widget.location,
+            'currentLocation': {
+              'longitude': widget.currentLocation.longitude,
+              'latitude': widget.currentLocation.latitude,
+            },
+            'Crop': 'Wheat',
+            'sowedDate': '2024-05-15'
+          };
+          await storePolygonData(polygonData);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => InitPage(
+                index: 1,
+              ),
+            ),
+          );
         } else {
           print('Failed to load data: ${response.body}');
         }

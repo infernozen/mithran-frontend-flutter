@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:core';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flip_card/flip_card.dart';
@@ -12,6 +13,7 @@ import 'package:mithran/screen/planting-section/digitaltwin.dart';
 import 'package:mithran/screen/planting-section/fertilizercalculator.dart';
 import 'package:mithran/screen/planting-section/leafhealth.dart';
 import 'package:mithran/widgets/insights_chart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../widgets/preview.dart';
 import '../../helpers/soilhealthhelp.dart';
 
@@ -58,7 +60,6 @@ class _SoilHealthState extends State<SoilHealth> {
           Crop: fieldData[i]['Crop'],
           latitude: fieldData[i]['currentLocation']['latitude'],
           longitude: fieldData[i]['currentLocation']['longitude'],
-          polygonLatLngs: fieldData[i]['polygonLatLngs'],
           sowedDate: DateTime.parse(fieldData[i]['sowedDate'])));
     }
   }
@@ -92,7 +93,7 @@ class _SoilHealthState extends State<SoilHealth> {
     );
   }
 
-  static const fieldData = [
+  static List<Map<String, dynamic>> fieldData = [
     {
       "polygonId": "66c1de28287b0e0f94fd16a9",
       "fieldName": "Rosan's Farm Field",
@@ -171,6 +172,40 @@ class _SoilHealthState extends State<SoilHealth> {
     }
   ];
 
+  Future<void> _initializeFieldData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Retrieve the existing fieldDataList from SharedPreferences
+    List<String>? savedFieldDataList = prefs.getStringList('fieldDataList');
+
+    if (savedFieldDataList != null) {
+      List savedFieldData = savedFieldDataList.map((jsonString) {
+        return jsonDecode(jsonString);
+      }).toList();
+
+      setState(() {
+        for (var newField in savedFieldData) {
+          bool alreadyExists = fieldData
+              .any((field) => field['polygonId'] == newField['polygonId']);
+          if (!alreadyExists) {
+            fieldData.add(newField);
+            cropFieldList.clear();
+            fieldDecodeJson(cropFieldList, fieldData);
+            fields.clear();
+            crops.clear();
+            formFieldList();
+          }
+        }
+      });
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _initializeFieldData();
+  }
+
   String getCropStage(int daysSinceSowing, int harvestDays) {
     if (daysSinceSowing < harvestDays * 0.2) return "Germination";
     if (daysSinceSowing < harvestDays * 0.4) return "Vegetative";
@@ -212,13 +247,16 @@ class _SoilHealthState extends State<SoilHealth> {
   void initState() {
     super.initState();
     trendingDecodeJson(trendData, trendingData);
+    print(fieldData);
     fieldDecodeJson(cropFieldList, fieldData);
+    _initializeFieldData();
     formFieldList();
     selectedField = fields.first;
     selectedCrop = crops.first;
     stage =
         getCurrentStage(selectedCrop, cropFieldList[selectedIndex].sowedDate);
     print(stage);
+    print(fieldData);
     Timer.periodic(Duration(seconds: 5), (timer) {
       if (!sowedCardKey.currentState!.isFront) {
         sowedCardKey.currentState!.toggleCard();
@@ -384,7 +422,7 @@ class _SoilHealthState extends State<SoilHealth> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                "Virtual Form",
+                                "Virtual Farm",
                                 style: TextStyle(
                                   fontFamily: "Poppins",
                                   fontSize: 18.0,

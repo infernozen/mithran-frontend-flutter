@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mithran/repositories/weatherprovider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'screen/init_page.dart';
 
@@ -37,7 +38,9 @@ class _SplashScreenState extends State<SplashScreen> {
         _index = (_index + 1) % _alignments.length;
       });
     });
-
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.remove('fieldDataList');
+    });
     Timer(const Duration(seconds: 4), () {});
   }
 
