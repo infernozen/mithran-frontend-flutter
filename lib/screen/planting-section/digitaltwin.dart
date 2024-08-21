@@ -381,7 +381,7 @@ class DigitalTwin extends StatelessWidget {
                           children: [
                             const SizedBox(height: 5),
                             const Text(
-                              "Cant't find the right result?",
+                              "Can't find the right result?",
                               style: TextStyle(
                                   fontFamily: "Poppins",
                                   fontSize: 17,
@@ -399,7 +399,7 @@ class DigitalTwin extends StatelessWidget {
                                     text: "Click here to ask ",
                                   ),
                                   TextSpan(
-                                    text: "Uzhlavan",
+                                    text: "Uzhavan",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                     ),

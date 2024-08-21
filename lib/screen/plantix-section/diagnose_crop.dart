@@ -201,7 +201,9 @@ class _DiagnoseCropState extends State<DiagnoseCrop> {
                               width: size.width * 0.81,
                               child: Text(
                                 dataProvider.title,
+                                maxLines: 1,
                                 style: const TextStyle(
+                                    overflow: TextOverflow.ellipsis,
                                     fontFamily: "Poppins",
                                     fontSize: 22,
                                     fontWeight: FontWeight.w700),
@@ -474,7 +476,7 @@ class _DiagnoseCropState extends State<DiagnoseCrop> {
                               children: [
                                 const SizedBox(height: 5),
                                 const Text(
-                                  "Cant't find the right result?",
+                                  "Can't find the right result?",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
                                       fontSize: 17,
@@ -492,7 +494,7 @@ class _DiagnoseCropState extends State<DiagnoseCrop> {
                                         text: "Click here to ask ",
                                       ),
                                       TextSpan(
-                                        text: "Uzhlavan",
+                                        text: "Uzhavan",
                                         style: TextStyle(
                                           fontWeight: FontWeight.w700,
                                         ),

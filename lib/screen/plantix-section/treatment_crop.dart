@@ -136,7 +136,9 @@ class _TreatmentPageState extends State<TreatmentPage> {
                                   children: [
                                     Text(
                                       widget.title,
+                                      maxLines: 2,
                                       style: const TextStyle(
+                                          overflow: TextOverflow.ellipsis,
                                           fontFamily: "Poppins",
                                           fontWeight: FontWeight.w600,
                                           fontSize: 18),
