@@ -27,7 +27,7 @@ class _InitPageState extends State<InitPage> {
   void _initPages() {
     _pages = [
       HomePage(onReset: onReset),
-      SoilHealth(onReset: onReset),
+      Soil(onReset: onReset),
       LeafHealth(
         polygonId: '',
       ),

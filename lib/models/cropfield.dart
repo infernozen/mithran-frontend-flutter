@@ -1,6 +1,7 @@
 class CropField {
   CropField(
-      {required this.fieldName,
+      {required this.polygonId,
+      required this.fieldName,
       required this.fieldSize,
       required this.location,
       required this.Crop,
@@ -9,6 +10,7 @@ class CropField {
       required this.polygonLatLngs,
       required this.sowedDate});
 
+  final String polygonId;
   final String fieldName;
   final double fieldSize;
   final String location;

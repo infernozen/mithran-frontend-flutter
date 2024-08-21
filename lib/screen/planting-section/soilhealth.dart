@@ -12,8 +12,27 @@ import 'package:mithran/screen/planting-section/digitaltwin.dart';
 import 'package:mithran/screen/planting-section/fertilizercalculator.dart';
 import 'package:mithran/screen/planting-section/leafhealth.dart';
 import 'package:mithran/widgets/insights_chart.dart';
+import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
+import '../../models/insightmodel.dart';
+import '../../models/soildata.dart';
+import '../../models/vegetationdata.dart';
+import '../../repositories/farmprovider.dart';
 import '../../widgets/preview.dart';
 import '../../helpers/soilhealthhelp.dart';
+
+class Soil extends StatelessWidget {
+  final void Function() onReset;
+  Soil({super.key, required this.onReset});
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (context) => FarmProvider(),
+      child: SoilHealth(onReset: onReset),
+    );
+  }
+}
 
 class SoilHealth extends StatefulWidget {
   final void Function() onReset;
@@ -25,7 +44,9 @@ class SoilHealth extends StatefulWidget {
 class _SoilHealthState extends State<SoilHealth> {
   List<String> crops = [];
   List<TrendData> trendData = [];
-  String currentCrop = "apple";
+  List<Insight> insightList = [];
+  InsightProvider insightProvider = InsightProvider(insightsList: []);
+  Map<String, String> result = {};
   CropStage stage = CropStage('', DateTime.now());
   int _currentIndex = 0;
   int _selectedInsight = 0;
@@ -34,6 +55,8 @@ class _SoilHealthState extends State<SoilHealth> {
   int selectedIndex = 0;
   List<String> fields = [];
   List<CropField> cropFieldList = [];
+  DateTime sowedDate =
+      DateTime(2024, 5, 24); // sowed date should be from the data Rosan to do
   GlobalKey<FlipCardState> sowedCardKey = GlobalKey<FlipCardState>();
   GlobalKey<FlipCardState> stageCardKey = GlobalKey<FlipCardState>();
   GlobalKey<FlipCardState> harvestCardKey = GlobalKey<FlipCardState>();
@@ -52,6 +75,7 @@ class _SoilHealthState extends State<SoilHealth> {
   void fieldDecodeJson(cropFieldList, fieldData) {
     for (int i = 0; i < fieldData.length; i++) {
       cropFieldList.add(CropField(
+          polygonId: fieldData[i]['polygonId'],
           fieldName: fieldData[i]['fieldName'],
           fieldSize: double.parse(fieldData[i]['fieldSize']),
           location: fieldData[i]['location'],
@@ -84,7 +108,12 @@ class _SoilHealthState extends State<SoilHealth> {
               selectedField = field;
               selectedCrop = crop;
               selectedIndex = index;
-              stage = getCurrentStage(crop, cropFieldList[index].sowedDate);
+              _selectedInsight = 0;
+              fetchFarmData(
+                  cropFieldList[selectedIndex].polygonId,
+                  cropFieldList[selectedIndex].Crop,
+                  cropFieldList[selectedIndex].latitude.toString(),
+                  cropFieldList[selectedIndex].longitude.toString());
             });
           },
         );
@@ -93,25 +122,6 @@ class _SoilHealthState extends State<SoilHealth> {
   }
 
   static const fieldData = [
-    {
-      "polygonId": "66c1de28287b0e0f94fd16a9",
-      "fieldName": "Rosan's Farm Field",
-      "fieldSize": "6.34",
-      "polygonLatLngs": [
-        [12.753240558862867, 80.19547026604414],
-        [12.753617595128063, 80.19684556871653],
-        [12.752493351769175, 80.19731160253286],
-        [12.75165425355935, 80.19599329680204],
-        [12.753240558862867, 80.19547026604414]
-      ],
-      "location": "SSN Cricket Ground Road, Kalavakkam, Tamil Nadu, India",
-      "currentLocation": {
-        "longitude": 80.19634500145912,
-        "latitude": 12.752739586998171
-      },
-      "Crop": "Wheat",
-      "sowedDate": "2024-07-15",
-    },
     {
       "polygonId": "66c57aed93997d119bbff7bd",
       "fieldName": "Resting Ground",
@@ -208,17 +218,32 @@ class _SoilHealthState extends State<SoilHealth> {
     }
   }
 
+  void formInsightList(soilInsights) {
+    var insights = soilInsights["insights"];
+    for (int i = 0; i < insights.length; i++) {
+      insightList.add(Insight(
+          condition: insights[i]["condition"],
+          minSoilMoisture: insights[i]["soil_moisture_range"]["min"],
+          maxSoilMoisture: insights[i]["soil_moisture_range"]["max"],
+          minTemperatureGradient: insights[i]["temperature_gradient_range"]
+              ["min"],
+          maxTemperatureGradient: insights[i]["temperature_gradient_range"]
+              ["max"],
+          insight: insights[i]["insight"]));
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     trendingDecodeJson(trendData, trendingData);
     fieldDecodeJson(cropFieldList, fieldData);
     formFieldList();
+    formInsightList(soilInsights);
     selectedField = fields.first;
     selectedCrop = crops.first;
     stage =
         getCurrentStage(selectedCrop, cropFieldList[selectedIndex].sowedDate);
-    print(stage);
     Timer.periodic(Duration(seconds: 5), (timer) {
       if (!sowedCardKey.currentState!.isFront) {
         sowedCardKey.currentState!.toggleCard();
@@ -230,10 +255,23 @@ class _SoilHealthState extends State<SoilHealth> {
         harvestCardKey.currentState!.toggleCard();
       }
     });
+    final dataProvider = Provider.of<FarmProvider>(context, listen: false);
+    dataProvider.fetchSoilData(
+        cropFieldList[selectedIndex].polygonId,
+        selectedCrop,
+        cropFieldList[selectedIndex].latitude.toString(),
+        cropFieldList[selectedIndex].longitude.toString());
+  }
+
+  void fetchFarmData(String polygonId, String selectedCrop, String latitude,
+      String longitude) {
+    final dataProvider = Provider.of<FarmProvider>(context, listen: false);
+    dataProvider.fetchSoilData(polygonId, selectedCrop, latitude, longitude);
   }
 
   @override
   Widget build(BuildContext context) {
+    final dataProvider = Provider.of<FarmProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xffFFFFFF),
@@ -667,67 +705,51 @@ class _SoilHealthState extends State<SoilHealth> {
                         )),
               ),
               const SizedBox(height: 10.0),
-              GraphComponent(
-                updateActiveTab: updateActiveTab,
-              ),
-              const SizedBox(height: 10.0),
-              Container(
-                padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                child: Container(
-                  padding: EdgeInsets.all(13.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: const Color(0xffD2D5DA),
-                      width: 2.0,
+              !dataProvider.isLoading
+                  ? GraphComponent(
+                      updateActiveTab: updateActiveTab,
+                      soilData: SoilData(
+                          date: dataProvider.farmData['date'],
+                          moisture: dataProvider.farmData['moisture'],
+                          temperatureGradient: calculateTemperatureGradient(
+                              dataProvider.farmData['t0'],
+                              dataProvider.farmData['t10'])),
+                      vegetationData: VegetationData(
+                          date: dataProvider.vegetationData['date'],
+                          growthRate: dataProvider.vegetationData['ndvi'],
+                          healthIndex:
+                              dataProvider.vegetationData['mithranScore']),
+                      weatherData: dataProvider.weatherDataList)
+                  : Container(
+                      padding: EdgeInsets.only(left: 25.0, right: 25.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Shimmer.fromColors(
+                        highlightColor: Colors.grey[100]!,
+                        baseColor: Colors.grey[300]!,
+                        child: Container(
+                          color: Colors.grey[100],
+                          height: 300,
+                        ),
+                      ),
                     ),
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(10.0),
+              const SizedBox(height: 10.0),
+              !dataProvider.isLoading
+                  ? Container(
+                      padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.all(13.0),
                         decoration: BoxDecoration(
-                          color: _selectedInsight == 0
-                              ? Color(0xffFFEBC6)
-                              : _selectedInsight == 1
-                                  ? Color(0xffDEF9D3)
-                                  : Color(0xffC7E6FF),
+                          border: Border.all(
+                            color: const Color(0xffD2D5DA),
+                            width: 2.0,
+                          ),
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(10.0),
                         ),
-                        child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset("assets/planting/health.png",
-                                  height: 25.0, width: 25.0),
-                              const SizedBox(width: 10.0),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Condition",
-                                    style: TextStyle(
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 16.0,
-                                    ),
-                                  ),
-                                  const Text(
-                                    "Mid-Low Moisture with Mid-Low Temperature",
-                                    style: TextStyle(
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10.0,
-                                      color: Colors.black54,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ]),
-                      ),
-                      const SizedBox(height: 10.0),
-                      Row(
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
@@ -741,143 +763,268 @@ class _SoilHealthState extends State<SoilHealth> {
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Image.asset(
-                                          "assets/planting/presention-chart.png",
-                                          height: 25.0,
-                                          width: 25.0),
-                                    ],
-                                  ),
-                                  const SizedBox(width: 5.0),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        "Insights",
-                                        style: TextStyle(
-                                          fontFamily: "Poppins",
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 190.0,
-                                        child: const Text(
-                                          "Soil moisture levels are consistent and the temperature gradient is stable, providing an excellent environment for your crop. Continue with your current management practices.",
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Image.asset("assets/planting/health.png",
+                                        height: 25.0, width: 25.0),
+                                    const SizedBox(width: 10.0),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          "Condition",
                                           style: TextStyle(
                                             fontFamily: "Poppins",
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 12.0,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 16.0,
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                        Container(
+                                          width: 275.0,
+                                          child: Text(
+                                            _selectedInsight == 0
+                                                ? "${insightProvider.findInsight(dataProvider.farmData['moisture'], calculateTemperatureGradient(dataProvider.farmData['t0'], dataProvider.farmData['t10']))["Condition"]}"
+                                                : _selectedInsight == 1
+                                                    ? "${dataProvider.vegetationData["condition"]}"
+                                                    : "${dataProvider.weatherData["condition"]}",
+                                            style: TextStyle(
+                                              fontFamily: "Poppins",
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14.0,
+                                              color: Colors.black54,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ]),
                             ),
-                            const SizedBox(width: 10.0),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: 100.0,
-                                  padding: EdgeInsets.only(
-                                      left: 10.0,
-                                      right: 10.0,
-                                      top: 5.0,
-                                      bottom: 5.0),
-                                  decoration: BoxDecoration(
-                                    color: _selectedInsight == 0
-                                        ? Color(0xffFFEBC6)
-                                        : _selectedInsight == 1
-                                            ? Color(0xffDEF9D3)
-                                            : Color(0xffC7E6FF),
-                                    borderRadius: BorderRadius.circular(10.0),
+                            const SizedBox(height: 10.0),
+                            Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(10.0),
+                                    decoration: BoxDecoration(
+                                      color: _selectedInsight == 0
+                                          ? Color(0xffFFEBC6)
+                                          : _selectedInsight == 1
+                                              ? Color(0xffDEF9D3)
+                                              : Color(0xffC7E6FF),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Image.asset(
+                                                "assets/planting/presention-chart.png",
+                                                height: 25.0,
+                                                width: 25.0),
+                                          ],
+                                        ),
+                                        const SizedBox(width: 5.0),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text(
+                                              "Insights",
+                                              style: TextStyle(
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                            Container(
+                                              width: 190.0,
+                                              height: 117.0,
+                                              child: SingleChildScrollView(
+                                                child: Text(
+                                                  _selectedInsight == 0
+                                                      ? "${insightProvider.findInsight(dataProvider.farmData['moisture'], calculateTemperatureGradient(dataProvider.farmData['t0'], dataProvider.farmData['t10']))["Insight"]}"
+                                                      : _selectedInsight == 1
+                                                          ? "${dataProvider.vegetationData["message"]}"
+                                                          : "${dataProvider.weatherData["message"]}",
+                                                  style: TextStyle(
+                                                    fontFamily: "Poppins",
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12.0,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  child: Column(
+                                  const SizedBox(width: 10.0),
+                                  Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Image.asset(
-                                          "assets/planting/moisture.png",
-                                          height: 25.0,
-                                          width: 25.0),
-                                      const SizedBox(height: 5.0),
-                                      const Text(
-                                        "Moisture",
-                                        style: TextStyle(
-                                          fontFamily: "Poppins",
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 10.0,
+                                      Container(
+                                        width: 100.0,
+                                        padding: EdgeInsets.only(
+                                            left: 10.0,
+                                            right: 10.0,
+                                            top: 5.0,
+                                            bottom: 5.0),
+                                        decoration: BoxDecoration(
+                                          color: _selectedInsight == 0
+                                              ? Color(0xffFFEBC6)
+                                              : _selectedInsight == 1
+                                                  ? Color(0xffDEF9D3)
+                                                  : Color(0xffC7E6FF),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                                _selectedInsight == 0
+                                                    ? "assets/planting/moisture.png"
+                                                    : _selectedInsight == 1
+                                                        ? "assets/planting/mithranscore.png"
+                                                        : "assets/planting/rain.png",
+                                                height: 25.0,
+                                                width: 25.0),
+                                            const SizedBox(height: 5.0),
+                                            Text(
+                                              _selectedInsight == 0
+                                                  ? "Moisture"
+                                                  : _selectedInsight == 1
+                                                      ? "Mithran Score"
+                                                      : "Rain",
+                                              style: TextStyle(
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 10.0,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 5.0),
+                                            Text(
+                                              _selectedInsight == 0
+                                                  ? "${double.parse(dataProvider.farmData['moisture'].toString()).toStringAsFixed(2)} m³/m³"
+                                                  : _selectedInsight == 1
+                                                      ? "${double.parse(dataProvider.vegetationData["mithranScore"].toString()).toStringAsFixed(2)}"
+                                                      : double.parse(
+                                                              dataProvider
+                                                                  .weatherData[
+                                                                      "rain"]
+                                                                  .toString())
+                                                          .toStringAsFixed(2),
+                                              style: TextStyle(
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 12.0,
+                                                color: _selectedInsight == 0
+                                                    ? Color.fromARGB(
+                                                        255, 232, 138, 6)
+                                                    : _selectedInsight == 1
+                                                        ? Color.fromARGB(
+                                                            255, 0, 207, 21)
+                                                        : Colors.blue,
+                                              ),
+                                            )
+                                          ],
                                         ),
                                       ),
                                       const SizedBox(height: 5.0),
-                                      const Text(
-                                        "10 m³/m³",
-                                        style: TextStyle(
-                                          fontFamily: "Poppins",
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 12.0,
+                                      Container(
+                                        width: 100.0,
+                                        padding: EdgeInsets.only(
+                                            left: 10.0,
+                                            right: 10.0,
+                                            top: 5.0,
+                                            bottom: 5.0),
+                                        decoration: BoxDecoration(
+                                          color: _selectedInsight == 0
+                                              ? Color(0xffFFEBC6)
+                                              : _selectedInsight == 1
+                                                  ? Color(0xffDEF9D3)
+                                                  : Color(0xffC7E6FF),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
                                         ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(height: 5.0),
-                                Container(
-                                  padding: EdgeInsets.only(
-                                      left: 10.0,
-                                      right: 10.0,
-                                      top: 5.0,
-                                      bottom: 5.0),
-                                  decoration: BoxDecoration(
-                                    color: _selectedInsight == 0
-                                        ? Color(0xffFFEBC6)
-                                        : _selectedInsight == 1
-                                            ? Color(0xffDEF9D3)
-                                            : Color(0xffC7E6FF),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Image.asset("assets/planting/temp.png",
-                                          height: 25.0, width: 25.0),
-                                      const SizedBox(height: 5.0),
-                                      const Text(
-                                        "Temp Gradient",
-                                        style: TextStyle(
-                                          fontFamily: "Poppins",
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 10.0,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                                _selectedInsight == 0
+                                                    ? "assets/planting/temp.png"
+                                                    : _selectedInsight == 1
+                                                        ? "assets/planting/ndvi.png"
+                                                        : "assets/planting/pressure.png",
+                                                height: 25.0,
+                                                width: 25.0),
+                                            const SizedBox(height: 5.0),
+                                            Text(
+                                              _selectedInsight == 0
+                                                  ? "Temp Gradient"
+                                                  : _selectedInsight == 1
+                                                      ? "NDVI Aggre."
+                                                      : "Pressure",
+                                              style: TextStyle(
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 10.0,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 5.0),
+                                            Text(
+                                              _selectedInsight == 0
+                                                  ? "${calculateTemperatureGradient(dataProvider.farmData['t0'], dataProvider.farmData['t10']).toStringAsFixed(2)}"
+                                                  : _selectedInsight == 1
+                                                      ? "${double.parse(dataProvider.vegetationData['ndvi'].toString()).toStringAsFixed(2)}"
+                                                      : "${dataProvider.weatherData["pressure"]} hPa",
+                                              style: TextStyle(
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 12.0,
+                                                color: _selectedInsight == 0
+                                                    ? Color.fromARGB(
+                                                        255, 230, 90, 35)
+                                                    : _selectedInsight == 1
+                                                        ? Color.fromARGB(
+                                                            255, 8, 114, 12)
+                                                        : Color.fromARGB(
+                                                            255, 31, 179, 242),
+                                              ),
+                                            )
+                                          ],
                                         ),
                                       ),
-                                      const SizedBox(height: 5.0),
-                                      const Text(
-                                        "0.87",
-                                        style: TextStyle(
-                                          fontFamily: "Poppins",
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 12.0,
-                                        ),
-                                      )
                                     ],
                                   ),
-                                ),
-                              ],
-                            ),
-                          ]),
-                    ],
-                  ),
-                ),
-              ),
+                                ]),
+                          ],
+                        ),
+                      ),
+                    )
+                  : Container(
+                      padding: EdgeInsets.only(left: 25.0, right: 25.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Shimmer.fromColors(
+                        highlightColor: Colors.grey[100]!,
+                        baseColor: Colors.grey[300]!,
+                        child: Container(
+                          color: Colors.grey[100],
+                          height: 300,
+                        ),
+                      ),
+                    ),
               Stack(children: [
                 CarouselSlider(
                   options: CarouselOptions(
