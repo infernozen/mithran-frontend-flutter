@@ -124,7 +124,7 @@ class _SoilHealthState extends State<SoilHealth> {
 
   static List<Map<String, dynamic>> fieldData = [
     {
-      "polygonId": "66c1de28287b0e0f94fd16a9",
+      "polygonId": "66a1335886ec340008b90821",
       "fieldName": "Rosan's Farm Field",
       "fieldSize": "6.34",
       "polygonLatLngs": [
@@ -781,14 +781,17 @@ class _SoilHealthState extends State<SoilHealth> {
                   : Container(
                       padding: EdgeInsets.only(left: 25.0, right: 25.0),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Color(0xffF6F5F3),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: Shimmer.fromColors(
                         highlightColor: Colors.grey[100]!,
                         baseColor: Colors.grey[300]!,
                         child: Container(
-                          color: Colors.grey[100],
+                          decoration: BoxDecoration(
+                            color: Colors.grey[100],
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
                           height: 300,
                         ),
                       ),
@@ -1071,14 +1074,17 @@ class _SoilHealthState extends State<SoilHealth> {
                   : Container(
                       padding: EdgeInsets.only(left: 25.0, right: 25.0),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Color(0xffF6F5F3),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: Shimmer.fromColors(
                         highlightColor: Colors.grey[100]!,
                         baseColor: Colors.grey[300]!,
                         child: Container(
-                          color: Colors.grey[100],
+                          decoration: BoxDecoration(
+                            color: Colors.grey[100],
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
                           height: 300,
                         ),
                       ),
