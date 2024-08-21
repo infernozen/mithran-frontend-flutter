@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
+import '../models/soildata.dart';
+import '../models/vegetationdata.dart';
+import '../models/weatherdata.dart';
+
 class GraphComponent extends StatefulWidget {
+  final SoilData soilData;
+  final VegetationData vegetationData;
+  final List<WeatherData> weatherData;
   final void Function(String tabName) updateActiveTab;
-  GraphComponent({super.key, required this.updateActiveTab});
+  GraphComponent(
+      {super.key,
+      required this.updateActiveTab,
+      required this.soilData,
+      required this.vegetationData,
+      required this.weatherData});
   @override
   _GraphComponentState createState() => _GraphComponentState();
 }
@@ -68,34 +80,34 @@ class _GraphComponentState extends State<GraphComponent>
   Widget renderContent() {
     switch (activeTab) {
       case 'Soil Health':
-        return renderSoilHealthSection();
+        return renderSoilHealthSection(widget.soilData);
       case 'Vegetation':
-        return renderVegetationSection();
+        return renderVegetationSection(widget.vegetationData);
       case 'Weather':
-        return renderWeatherSection();
+        return renderWeatherSection(widget.weatherData);
       default:
         return Container();
     }
   }
 
-  Widget renderSoilHealthSection() {
+  Widget renderSoilHealthSection(soilData) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: SoilHealthGraph(),
+      child: SoilHealthGraph(soilData: soilData),
     );
   }
 
-  Widget renderVegetationSection() {
+  Widget renderVegetationSection(vegetationData) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: VegetationGraph(),
+      child: VegetationGraph(vegetationData: vegetationData),
     );
   }
 
-  Widget renderWeatherSection() {
+   Widget renderWeatherSection(weatherData) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: WeatherGraph(),
+      child: WeatherGraph(weatherData: weatherData),
     );
   }
 
@@ -170,32 +182,38 @@ class _GraphComponentState extends State<GraphComponent>
   }
 }
 
-class SoilHealthGraph extends StatelessWidget {
+class SoilHealthGraph extends StatefulWidget {
+  final SoilData soilData;
+  SoilHealthGraph({super.key, required this.soilData});
+  _SoilHealthGraphState createState() => _SoilHealthGraphState();
+}
+
+class _SoilHealthGraphState extends State<SoilHealthGraph> {
+  var soilDataList = [
+    SoilData(
+        date: DateTime(2024, 8, 10), moisture: 0.35, temperatureGradient: 0.04),
+    SoilData(
+        date: DateTime(2024, 8, 11), moisture: 0.3, temperatureGradient: 0.035),
+    SoilData(
+        date: DateTime(2024, 8, 12),
+        moisture: 0.45,
+        temperatureGradient: 0.055),
+    SoilData(
+        date: DateTime(2024, 8, 13),
+        moisture: 0.55,
+        temperatureGradient: 0.025),
+    SoilData(
+        date: DateTime(2024, 8, 14), moisture: 0.60, temperatureGradient: 0.02),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    soilDataList.add(widget.soilData);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final soilData = [
-      SoilData(
-          date: DateTime(2024, 8, 10),
-          moisture: 0.35,
-          temperatureGradient: 0.4),
-      SoilData(
-          date: DateTime(2024, 8, 11),
-          moisture: 0.3,
-          temperatureGradient: 0.35),
-      SoilData(
-          date: DateTime(2024, 8, 12),
-          moisture: 0.45,
-          temperatureGradient: 0.55),
-      SoilData(
-          date: DateTime(2024, 8, 13),
-          moisture: 0.65,
-          temperatureGradient: 0.25),
-      SoilData(
-          date: DateTime(2024, 8, 14),
-          moisture: 0.35,
-          temperatureGradient: 0.65),
-    ];
-
     return LineChart(
       LineChartData(
         gridData: FlGridData(
@@ -215,7 +233,7 @@ class SoilHealthGraph extends StatelessWidget {
               showTitles: false,
               reservedSize: 40,
               getTitlesWidget: (value, meta) {
-                final date = soilData[value.toInt()].date;
+                final date = soilDataList[value.toInt()].date;
                 return SideTitleWidget(
                   axisSide: meta.axisSide,
                   child: Text(
@@ -246,20 +264,20 @@ class SoilHealthGraph extends StatelessWidget {
         borderData: FlBorderData(show: false),
         lineBarsData: [
           LineChartBarData(
-            spots: soilData
+            spots: soilDataList
                 .asMap()
                 .map((index, value) =>
                     MapEntry(index, FlSpot(index.toDouble(), value.moisture)))
                 .values
                 .toList(),
             isCurved: true,
-            color: Colors.redAccent,
+            color: const Color.fromARGB(255, 232, 138, 6),
             belowBarData: BarAreaData(
               show: true,
               gradient: LinearGradient(
                 colors: [
-                  Colors.red.withOpacity(0.5),
-                  Colors.red.withOpacity(0.0),
+                  const Color.fromARGB(255, 190, 135, 47).withOpacity(0.5),
+                  const Color.fromARGB(255, 190, 135, 47).withOpacity(0.1),
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -269,20 +287,20 @@ class SoilHealthGraph extends StatelessWidget {
             dotData: FlDotData(show: true),
           ),
           LineChartBarData(
-            spots: soilData
+            spots: soilDataList
                 .asMap()
                 .map((index, value) => MapEntry(
                     index, FlSpot(index.toDouble(), value.temperatureGradient)))
                 .values
                 .toList(),
             isCurved: true,
-            color: Colors.blue,
+            color: const Color.fromARGB(255, 230, 90, 35),
             belowBarData: BarAreaData(
               show: true,
               gradient: LinearGradient(
                 colors: [
-                  Colors.blue.withOpacity(0.5),
-                  Colors.blue.withOpacity(0.0),
+                  const Color.fromARGB(255, 243, 166, 33).withOpacity(0.5),
+                  const Color.fromARGB(255, 243, 166, 33).withOpacity(0.0),
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -297,25 +315,36 @@ class SoilHealthGraph extends StatelessWidget {
   }
 }
 
-class VegetationGraph extends StatelessWidget {
+class VegetationGraph extends StatefulWidget {
+  final VegetationData vegetationData;
+  VegetationGraph({super.key, required this.vegetationData});
+  _VegetationGraphState createState() => _VegetationGraphState();
+}
+
+class _VegetationGraphState extends State<VegetationGraph> {
+  var vegetationDataList = [
+    VegetationData(
+        date: DateTime(2024, 8, 10), growthRate: 0.5, healthIndex: 79),
+    VegetationData(
+        date: DateTime(2024, 8, 11), growthRate: 0.8, healthIndex: 81),
+    VegetationData(
+        date: DateTime(2024, 8, 12), growthRate: 0.55, healthIndex: 82),
+    VegetationData(
+        date: DateTime(2024, 8, 13), growthRate: 0.45, healthIndex: 80),
+    VegetationData(
+        date: DateTime(2024, 8, 14), growthRate: 0.25, healthIndex: 78),
+    VegetationData(
+        date: DateTime(2024, 8, 15), growthRate: 0.55, healthIndex: 80),
+    // Add more data here
+  ];
+  @override
+  void initState() {
+    super.initState();
+    vegetationDataList.add(widget.vegetationData);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final vegetationData = [
-      VegetationData(
-          date: DateTime(2024, 8, 10), growthRate: 0.5, healthIndex: 0.7),
-      VegetationData(
-          date: DateTime(2024, 8, 11), growthRate: 0.55, healthIndex: 0.35),
-      VegetationData(
-          date: DateTime(2024, 8, 12), growthRate: 0.25, healthIndex: 0.25),
-      VegetationData(
-          date: DateTime(2024, 8, 13), growthRate: 0.45, healthIndex: 0.35),
-      VegetationData(
-          date: DateTime(2024, 8, 14), growthRate: 0.35, healthIndex: 0.5),
-      VegetationData(
-          date: DateTime(2024, 8, 15), growthRate: 0.15, healthIndex: 0.55),
-      // Add more data here
-    ];
-
     return LineChart(
       LineChartData(
         gridData: FlGridData(show: false),
@@ -324,7 +353,7 @@ class VegetationGraph extends StatelessWidget {
             sideTitles: SideTitles(
               reservedSize: 40,
               getTitlesWidget: (value, meta) {
-                final date = vegetationData[value.toInt()].date;
+                final date = vegetationDataList[value.toInt()].date;
                 return SideTitleWidget(
                   axisSide: meta.axisSide,
                   child: Text(
@@ -364,7 +393,7 @@ class VegetationGraph extends StatelessWidget {
         borderData: FlBorderData(show: false),
         lineBarsData: [
           LineChartBarData(
-            spots: vegetationData
+            spots: vegetationDataList
                 .asMap()
                 .map((index, value) =>
                     MapEntry(index, FlSpot(index.toDouble(), value.growthRate)))
@@ -382,12 +411,12 @@ class VegetationGraph extends StatelessWidget {
                 end: Alignment.bottomCenter,
               ),
             ),
-            color: Colors.green,
+            color: const Color.fromARGB(255, 8, 114, 12),
             barWidth: 3,
             dotData: FlDotData(show: true),
           ),
           LineChartBarData(
-            spots: vegetationData
+            spots: vegetationDataList
                 .asMap()
                 .map((index, value) => MapEntry(
                     index, FlSpot(index.toDouble(), value.healthIndex)))
@@ -397,15 +426,15 @@ class VegetationGraph extends StatelessWidget {
               show: true,
               gradient: LinearGradient(
                 colors: [
-                  Colors.blue.withOpacity(0.5),
-                  Colors.blue.withOpacity(0.0),
+                  const Color.fromARGB(255, 53, 243, 24).withOpacity(0.5),
+                  const Color.fromARGB(255, 53, 243, 24).withOpacity(0.0),
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
             ),
             isCurved: true,
-            color: Colors.blue,
+            color: const Color.fromARGB(255, 0, 207, 21),
             barWidth: 3,
             dotData: FlDotData(show: true),
           ),
@@ -415,22 +444,22 @@ class VegetationGraph extends StatelessWidget {
   }
 }
 
-class WeatherGraph extends StatelessWidget {
+class WeatherGraph extends StatefulWidget {
+  final List<WeatherData> weatherData;
+  WeatherGraph({super.key, required this.weatherData});
+  _WeatherGraphState createState() => _WeatherGraphState();
+}
+
+class _WeatherGraphState extends State<WeatherGraph> {
+  var weatherDataList = [];
+  @override
+  void initState() {
+    super.initState();
+    weatherDataList = widget.weatherData;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final weatherData = [
-      WeatherData(date: DateTime(2024, 8, 10), temperature: 30, humidity: 70),
-      WeatherData(date: DateTime(2024, 8, 11), temperature: 28, humidity: 65),
-      WeatherData(date: DateTime(2024, 8, 12), temperature: 22, humidity: 61),
-      WeatherData(date: DateTime(2024, 8, 13), temperature: 23, humidity: 66),
-
-      WeatherData(date: DateTime(2024, 8, 14), temperature: 21, humidity: 65),
-      WeatherData(date: DateTime(2024, 8, 15), temperature: 26, humidity: 63),
-      WeatherData(date: DateTime(2024, 8, 16), temperature: 27, humidity: 62),
-
-      // Add more data here
-    ];
-
     return LineChart(
       LineChartData(
         gridData: FlGridData(show: false),
@@ -439,7 +468,7 @@ class WeatherGraph extends StatelessWidget {
             sideTitles: SideTitles(
               reservedSize: 40,
               getTitlesWidget: (value, meta) {
-                final date = weatherData[value.toInt()].date;
+                final date = weatherDataList[value.toInt()].date;
                 return SideTitleWidget(
                   axisSide: meta.axisSide,
                   child: Text(
@@ -476,22 +505,22 @@ class WeatherGraph extends StatelessWidget {
         borderData: FlBorderData(show: false),
         lineBarsData: [
           LineChartBarData(
-            spots: weatherData
+            spots: weatherDataList
                 .asMap()
                 .map((index, value) => MapEntry(index,
                     FlSpot(index.toDouble(), value.temperature.toDouble())))
                 .values
                 .toList(),
             isCurved: true,
-            color: Colors.orange,
+            color: const Color.fromARGB(255, 31, 179, 242),
             barWidth: 3,
             dotData: FlDotData(show: true),
             belowBarData: BarAreaData(
               show: true,
               gradient: LinearGradient(
                 colors: [
-                  Colors.orange.withOpacity(0.5),
-                  Colors.orange.withOpacity(0.0),
+                  const Color.fromARGB(255, 18, 181, 181).withOpacity(0.5),
+                  const Color.fromARGB(255, 18, 181, 181).withOpacity(0.0),
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -499,7 +528,7 @@ class WeatherGraph extends StatelessWidget {
             ),
           ),
           LineChartBarData(
-            spots: weatherData
+            spots: weatherDataList
                 .asMap()
                 .map((index, value) => MapEntry(
                     index, FlSpot(index.toDouble(), value.humidity.toDouble())))
@@ -525,35 +554,4 @@ class WeatherGraph extends StatelessWidget {
       ),
     );
   }
-}
-
-class SoilData {
-  final DateTime date;
-  final double moisture;
-  final double temperatureGradient;
-
-  SoilData(
-      {required this.date,
-      required this.moisture,
-      required this.temperatureGradient});
-}
-
-class VegetationData {
-  final DateTime date;
-  final double growthRate;
-  final double healthIndex;
-
-  VegetationData(
-      {required this.date,
-      required this.growthRate,
-      required this.healthIndex});
-}
-
-class WeatherData {
-  final DateTime date;
-  final int temperature;
-  final int humidity;
-
-  WeatherData(
-      {required this.date, required this.temperature, required this.humidity});
 }
