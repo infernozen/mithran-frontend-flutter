@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mithran/screen/expense-section/expensetrackerpage.dart';
 import 'package:mithran/screen/home-section/homepage.dart';
 import 'package:mithran/screen/planting-section/soilhealth.dart';
+import 'hub-section/hubpage.dart';
 import 'planting-section/leafhealth.dart';
 
 class InitPage extends StatefulWidget {
@@ -28,8 +29,8 @@ class _InitPageState extends State<InitPage> {
     _pages = [
       HomePage(onReset: onReset),
       Soil(onReset: onReset),
-      LeafHealth(
-        polygonId: '',
+      HubPage(
+        onReset: onReset,
       ),
       ExpenseTracker(onReset: onReset),
     ];
