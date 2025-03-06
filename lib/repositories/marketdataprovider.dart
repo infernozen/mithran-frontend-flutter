@@ -15,7 +15,7 @@ class MarketDataProvider extends ChangeNotifier {
     isLoading = true;
     try {
       var response = await http.get(
-          Uri.parse('http://35.208.131.250:5000/market/price')
+          Uri.parse('http://34.122.191.130:5000/market/price')
               .replace(queryParameters: {
         'commodity': commodity,
         'state': state,

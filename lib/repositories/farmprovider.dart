@@ -18,14 +18,14 @@ class FarmProvider extends ChangeNotifier {
     weatherDataList = [];
     try {
       var soilResponse = await http.get(
-        Uri.parse('http://35.208.131.250:5000/soil/currentSoilData')
+        Uri.parse('http://34.122.191.130:5000/soil/currentSoilData')
             .replace(queryParameters: {
           'polyid': polygonId,
         }),
       );
 
       var msCropResponse = await http.get(
-        Uri.parse('http://35.208.131.250:5000/soil/mithranScoreForCrop')
+        Uri.parse('http://34.122.191.130:5000/soil/mithranScoreForCrop')
             .replace(queryParameters: {
           'polyid': polygonId,
           'crop': crop,
@@ -33,14 +33,14 @@ class FarmProvider extends ChangeNotifier {
       );
 
       var msResponse = await http.get(
-        Uri.parse('http://35.208.131.250:5000/soil/mithranScore')
+        Uri.parse('http://34.122.191.130:5000/soil/mithranScore')
             .replace(queryParameters: {
           'polyid': polygonId,
         }),
       );
 
       var weatherResponse = await http.get(
-          Uri.parse('http://35.208.131.250:5000/weather/currentWeather')
+          Uri.parse('http://34.122.191.130:5000/weather/currentWeather')
               .replace(queryParameters: {
         'lat': latitude,
         'lon': longitude,
