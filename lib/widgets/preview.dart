@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// ignore: unused_import
 import 'package:geocoding/geocoding.dart';
 
 class MapPreview extends StatefulWidget {
@@ -95,8 +96,8 @@ class _MapPreviewState extends State<MapPreview> {
             ),
           ),
           Positioned(
-            bottom: 10,
-            left: 10,
+            bottom: 5,
+            left: 5,
             child: Container(
               width: 200,
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),

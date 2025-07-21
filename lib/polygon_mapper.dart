@@ -203,9 +203,10 @@ class _PolygonMapState extends State<PolygonMap> {
                   children: [
                     Row(
                       children: [
-                        const SizedBox(
-                          width: 10,
-                        ),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.01, // 1% of the screen width
+                          ),
+
                         IconButton(
                           icon: const Icon(
                             Icons.close,
@@ -339,7 +340,11 @@ class _PolygonMapState extends State<PolygonMap> {
         ],
       ),
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 15),
+       padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.01, 
+          vertical: MediaQuery.of(context).size.height * 0.02,  
+        ),
+
         color: Colors.white,
         height: 90,
         child: Row(

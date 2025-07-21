@@ -106,7 +106,7 @@ class _FieldLocatorFormState extends State<FieldLocatorForm> {
       return;
     }
     if (double.parse(fieldSize.text) > 2.5) {
-      const baseUrl = "http://35.208.131.250:5000/soil/newPolyID";
+      const baseUrl = "https://mithran-backend-stellar-jaguar-xw.cfapps.us10-001.hana.ondemand.com/soil/newPolyID";
       final encodedCoordinates = convertLatLngToCoordinates(_polygonLatLngs);
       print(encodedCoordinates);
       final url =
@@ -205,7 +205,12 @@ class _FieldLocatorFormState extends State<FieldLocatorForm> {
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
                       color: const Color.fromRGBO(226, 225, 223, 1), width: 2)),
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+              padding: EdgeInsets.symmetric(
+                vertical: MediaQuery.of(context).size.height *
+                    0.02, // 2% of screen height
+                horizontal: MediaQuery.of(context).size.width *
+                    0.03, // 3% of screen width
+              ),
               width: MediaQuery.of(context).size.width * 0.9,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -250,7 +255,10 @@ class _FieldLocatorFormState extends State<FieldLocatorForm> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height *
+                        0.02, // 2% of screen height
+                  ),
                   TextFormField(
                     controller: fieldName,
                     decoration: InputDecoration(
@@ -303,7 +311,10 @@ class _FieldLocatorFormState extends State<FieldLocatorForm> {
                         fontWeight: FontWeight.w600,
                         overflow: TextOverflow.ellipsis),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height *
+                        0.02, // 2% of screen height
+                  ),
                   TextFormField(
                     initialValue: widget.location,
                     style: const TextStyle(
@@ -356,22 +367,29 @@ class _FieldLocatorFormState extends State<FieldLocatorForm> {
                           vertical: 16.0, horizontal: 12.0),
                     ),
                   ),
-                  if (fieldSize.value.text != "") const SizedBox(height: 16),
+                  if (fieldSize.value.text != "")
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height *
+                          0.02, // 2% of screen height
+                    ),
                   if (fieldSize.value.text != "")
                     Row(
                       children: [
                         SizedBox(
-                          width: 230,
-                          height: 55,
+                          width: MediaQuery.of(context).size.width *
+                              0.5, // 60% of screen width
+                          height: MediaQuery.of(context).size.height *
+                              0.06, // 7% of screen height
                           child: TextFormField(
                             controller: fieldSize,
                             readOnly: true,
                             style: const TextStyle(
-                                fontFamily: "Poppins",
-                                fontSize: 16,
-                                color: Colors.black87,
-                                fontWeight: FontWeight.w600,
-                                overflow: TextOverflow.ellipsis),
+                              fontFamily: "Poppins",
+                              fontSize: 16,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w600,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                             decoration: InputDecoration(
                               labelText: "Field size",
                               labelStyle: const TextStyle(
@@ -404,12 +422,19 @@ class _FieldLocatorFormState extends State<FieldLocatorForm> {
                                   width: 1.0,
                                 ),
                               ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 16.0, horizontal: 12.0),
+                              contentPadding: EdgeInsets.symmetric(
+                                vertical: MediaQuery.of(context).size.height *
+                                    0.02, // Responsive vertical padding
+                                horizontal: MediaQuery.of(context).size.width *
+                                    0.03, // Responsive horizontal padding
+                              ),
                             ),
                           ),
                         ),
-                        const SizedBox(width: 20),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width *
+                              0.06, // 5% of the screen width
+                        ),
                         SizedBox(
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(

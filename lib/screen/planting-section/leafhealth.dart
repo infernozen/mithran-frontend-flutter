@@ -182,11 +182,12 @@ class _LeafHealthState extends State<LeafHealth> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 20.0),
+                    const SizedBox(height: 10.0),
                     Container(
-                      padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.02),
                       child: Container(
-                        padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                        padding: EdgeInsets.only(left: 5.0, right: 5.0),
                         decoration: BoxDecoration(
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(7.5),
@@ -257,15 +258,15 @@ class _LeafHealthState extends State<LeafHealth> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 15.0),
+                    const SizedBox(height: 5.0),
                   ],
                 ),
               ),
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 5.0),
             if (readings.length > 0)
               Padding(
-                padding: const EdgeInsets.only(left: 15.0),
+                padding: const EdgeInsets.only(left: 20.0),
                 child: const Text("Past Readings",
                     style: TextStyle(
                       fontFamily: "Poppins",
@@ -273,7 +274,7 @@ class _LeafHealthState extends State<LeafHealth> {
                       fontSize: 16.0,
                     )),
               ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 5.0),
             Container(
               height: 270,
               child: ListView.builder(
@@ -281,7 +282,10 @@ class _LeafHealthState extends State<LeafHealth> {
                   itemBuilder: (context, index) {
                     return Container(
                       padding: EdgeInsets.only(
-                          left: 15.0, right: 15.0, bottom: 10.0),
+                        left: MediaQuery.of(context).size.width * 0.04,
+                        right: MediaQuery.of(context).size.width * 0.04,
+                        bottom: 5.0,
+                      ),
                       child: Container(
                         padding: EdgeInsets.all(15.0),
                         decoration: BoxDecoration(
@@ -368,7 +372,7 @@ class _LeafHealthState extends State<LeafHealth> {
                                       fontFamily: "Poppins",
                                       fontWeight: FontWeight.w600,
                                       color: Colors.black,
-                                      fontSize: 16.0,
+                                      fontSize: 13.0,
                                     )),
                               ],
                             ),
@@ -378,7 +382,7 @@ class _LeafHealthState extends State<LeafHealth> {
                     );
                   }),
             ),
-            const SizedBox(height: 20.0),
+            // const SizedBox(height: 10.0),
           ],
         ),
       ),

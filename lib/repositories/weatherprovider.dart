@@ -19,21 +19,21 @@ class WeatherProvider extends ChangeNotifier {
     isLoading = true;
     try {
       var weatherResponse = await http.get(
-          Uri.parse('http://35.208.131.250:5000/weather/currentWeather')
+          Uri.parse('https://mithran-backend-stellar-jaguar-xw.cfapps.us10-001.hana.ondemand.com/weather/currentWeather')
               .replace(queryParameters: {
         'lat': latitude,
         'lon': longitude,
       }));
 
       var forecastResponse = await http.get(
-          Uri.parse('http://35.208.131.250:5000/weather/hourlyForecast')
+          Uri.parse('https://mithran-backend-stellar-jaguar-xw.cfapps.us10-001.hana.ondemand.com/weather/hourlyForecast')
               .replace(queryParameters: {
         'lat': latitude,
         'lon': longitude,
       }));
 
       var dailyForecastResponse = await http.get(
-          Uri.parse('http://35.208.131.250:5000/weather/dailyForecast')
+          Uri.parse('https://mithran-backend-stellar-jaguar-xw.cfapps.us10-001.hana.ondemand.com/weather/dailyForecast')
               .replace(queryParameters: {
         'lat': latitude,
         'lon': longitude,

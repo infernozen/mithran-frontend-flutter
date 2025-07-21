@@ -346,7 +346,7 @@ class _FertilizerCalculatorState extends State<FertilizerCalculator> {
             ),
             const SizedBox(height: 20.0),
             Padding(
-              padding: const EdgeInsets.only(left: 25.0),
+              padding: const EdgeInsets.only(left: 10.0),
               child: Container(
                 width: 370,
                 child: Row(
@@ -422,10 +422,18 @@ class _FertilizerCalculatorState extends State<FertilizerCalculator> {
             ),
             const SizedBox(height: 10.0),
             Container(
-              padding: EdgeInsets.only(left: 25.0, right: 25.0),
+              padding: EdgeInsets.only(
+                left: MediaQuery.of(context).size.width * 0.06,
+                right: MediaQuery.of(context).size.width * 0.06,
+              ),
               child: Container(
                 padding: EdgeInsets.only(
-                    left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
+                  left: MediaQuery.of(context).size.width * 0.01,  // 2.5% of screen width
+                  right: MediaQuery.of(context).size.width * 0.0125, // 1.25% of screen width
+                  top: MediaQuery.of(context).size.height * 0.01,   // 1% of screen height
+                  bottom: MediaQuery.of(context).size.height * 0.01, // 1% of screen height
+                ),
+
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: const Color(0xffD2D5DA),
@@ -471,11 +479,15 @@ class _FertilizerCalculatorState extends State<FertilizerCalculator> {
                 ),
               ),
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 5.0),
             selectedOption == 0
                 ? Container(
-                    height: 300.0,
-                    padding: EdgeInsets.only(left: 25.0, right: 25.0),
+                    height: 270.0,
+                    padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width * 0.06,
+                      right: MediaQuery.of(context).size.width * 0.06,
+                      bottom: 5.0,
+                    ),
                     child: ListView.builder(
                       itemCount: switchToggled
                           ? cropStagesBag.length
@@ -486,7 +498,11 @@ class _FertilizerCalculatorState extends State<FertilizerCalculator> {
                           children: [
                             Container(
                               padding: EdgeInsets.only(
-                                  left: 15.0, top: 15.0, bottom: 15.0),
+                                left: MediaQuery.of(context).size.width * 0.025,  // Adjust this value as needed
+                                top: MediaQuery.of(context).size.height * 0.02,   // Adjust this value as needed
+                                bottom: MediaQuery.of(context).size.height * 0.02, // Adjust this value as needed
+                              ),
+
                               decoration: BoxDecoration(
                                   border: BorderDirectional(
                                       top: BorderSide(
@@ -513,7 +529,7 @@ class _FertilizerCalculatorState extends State<FertilizerCalculator> {
                                     style: TextStyle(
                                       fontFamily: "Poppins",
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 16.0,
+                                      fontSize: 15.0,
                                     ),
                                   )
                                 ],
@@ -552,7 +568,11 @@ class _FertilizerCalculatorState extends State<FertilizerCalculator> {
                                                 : Colors.transparent),
                                       )),
                                       padding: EdgeInsets.only(
-                                          top: 15.0, bottom: 15.0, left: 15.0),
+                                          top: MediaQuery.of(context).size.height * 0.02,   // Adjust this value as needed
+                                          bottom: MediaQuery.of(context).size.height * 0.02, // Adjust this value as needed
+                                          left: MediaQuery.of(context).size.width * 0.04,    // Adjust this value as needed
+                                        ),
+
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
@@ -606,9 +626,12 @@ class _FertilizerCalculatorState extends State<FertilizerCalculator> {
                     ),
                   )
                 : Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.05, // Adjust the multiplier as needed
+                      ),
+
                     child: Container(
-                        height: 300.0,
+                        height: 270.0,
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: const Color(0xffD2D5DA),
@@ -624,7 +647,11 @@ class _FertilizerCalculatorState extends State<FertilizerCalculator> {
                             var itemBag = entriesBag[index];
                             return Container(
                               padding: EdgeInsets.only(
-                                  left: 15.0, top: 15.0, bottom: 15.0),
+                                  left: MediaQuery.of(context).size.width * 0.05,  // Adjust this percentage as needed
+                                  top: MediaQuery.of(context).size.height * 0.03,   // Adjust this percentage as needed
+                                  bottom: MediaQuery.of(context).size.height * 0.03, // Adjust this percentage as needed
+                                ),
+
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 border: Border(
@@ -677,7 +704,11 @@ class _FertilizerCalculatorState extends State<FertilizerCalculator> {
                             })));
               },
               child: Container(
-                padding: EdgeInsets.only(left: 25.0, right: 25.0),
+                padding: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width * 0.055,  // Adjust this percentage as needed
+                  right: MediaQuery.of(context).size.width * 0.055, // Adjust this percentage as needed
+                ),
+
                 child: Container(
                   padding: const EdgeInsets.all(16.0),
                   decoration: BoxDecoration(

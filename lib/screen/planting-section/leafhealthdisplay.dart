@@ -102,7 +102,7 @@ class _LeafHealthDisplayState extends State<LeafHealthDisplay> {
                               style: TextStyle(
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w600,
-                                fontSize: 20.0,
+                                fontSize: 16.0,
                               )),
                         ],
                       ),
@@ -165,12 +165,12 @@ class _LeafHealthDisplayState extends State<LeafHealthDisplay> {
                           ),
                           const SizedBox(width: 20.0),
                           Container(
-                            width: 225.0,
+                            width: 200.0,
                             child: Text(
                               "No nitrogen application is required.",
                               style: TextStyle(
                                   fontFamily: "Poppins",
-                                  fontSize: 18.0,
+                                  fontSize: 16.0,
                                   fontWeight: FontWeight.w700),
                             ),
                           ),

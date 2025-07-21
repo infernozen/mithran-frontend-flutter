@@ -97,7 +97,7 @@ class _TreatmentPageState extends State<TreatmentPage> {
                     ),
                     const SizedBox(height: 20),
                     Container(
-                      height: size.height * 0.12,
+                      height: size.height * 0.10,
                       decoration: BoxDecoration(
                         color: const Color.fromARGB(226, 255, 255, 255),
                         borderRadius: BorderRadius.circular(8.0),
@@ -118,8 +118,8 @@ class _TreatmentPageState extends State<TreatmentPage> {
                             Padding(
                               padding: const EdgeInsets.only(top: 6.0),
                               child: Container(
-                                  width: 80,
-                                  height: 80,
+                                  width: 50,
+                                  height: 50,
                                   clipBehavior: Clip.hardEdge,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15)),
@@ -167,8 +167,8 @@ class _TreatmentPageState extends State<TreatmentPage> {
             Padding(
               padding: const EdgeInsets.only(top: 10.0, left: 20.0),
               child: SizedBox(
-                width: size.width * 0.9,
-                height: size.height * 0.29,
+                  width: MediaQuery.of(context).size.width * 0.9,  // 90% of the screen width
+                  height: MediaQuery.of(context).size.height * 0.35, 
                 child: Column(
                   children: [
                     const Row(
