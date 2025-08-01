@@ -15,7 +15,7 @@ class MarketDataProvider extends ChangeNotifier {
     isLoading = true;
     try {
       var response = await http.get(
-          Uri.parse('http://34.93.22.161:5000/market/price')
+          Uri.parse('https://mithran-backend-stellar-jaguar-xw.cfapps.us10-001.hana.ondemand.com/market/price')
               .replace(queryParameters: {
         'commodity': commodity,
         'state': state,

@@ -551,7 +551,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                   color: Colors.white,
                   child: DropdownMenu<String>(
                     label: const Text("Crop"),
-                    width: 120.0,
+                    width: 110.0,
                     menuHeight: 350,
                     menuStyle: const MenuStyle(
                         side: MaterialStatePropertyAll(BorderSide(

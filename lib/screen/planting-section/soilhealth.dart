@@ -144,6 +144,7 @@ class _SoilHealthState extends State<SoilHealth> {
       "Crop": "Wheat",
       "sowedDate": "2024-07-15",
     },
+
     {
       "polygonId": "66c57aed93997d119bbff7bd",
       "fieldName": "Resting Ground",
@@ -458,7 +459,8 @@ class _SoilHealthState extends State<SoilHealth> {
             children: [
               const SizedBox(height: 20.0),
               Container(
-                padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * 0.03),
                 child: Container(
                   decoration: BoxDecoration(
                       color: Colors.white,
@@ -474,7 +476,8 @@ class _SoilHealthState extends State<SoilHealth> {
                     )),
                     const SizedBox(height: 15.0),
                     Container(
-                      padding: EdgeInsets.only(left: 15.0, right: 8.0),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.03),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -578,7 +581,12 @@ class _SoilHealthState extends State<SoilHealth> {
                     ),
                     const SizedBox(height: 15.0),
                     Container(
-                      padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                      padding: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width * 0.02, // 2% of the screen width
+                        right: MediaQuery.of(context).size.width * 0.015, // 2% of the screen width
+                        bottom: MediaQuery.of(context).size.height * 0.01, // 1% of the screen height
+                      ),
+
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -586,7 +594,7 @@ class _SoilHealthState extends State<SoilHealth> {
                             key: sowedCardKey,
                             direction: FlipDirection.HORIZONTAL,
                             front: Container(
-                              width: 115.0,
+                              width: 110.0,
                               height: 50.0,
                               padding: EdgeInsets.only(
                                   left: 5.0, right: 5.0, top: 5.0, bottom: 5.0),
@@ -607,7 +615,7 @@ class _SoilHealthState extends State<SoilHealth> {
                               ),
                             ),
                             back: Container(
-                              width: 115.0,
+                              width: 110.0,
                               height: 50.0,
                               padding: EdgeInsets.only(
                                   left: 5.0, right: 5.0, top: 5.0, bottom: 5.0),
@@ -630,12 +638,13 @@ class _SoilHealthState extends State<SoilHealth> {
                               ),
                             ),
                           ),
+                          SizedBox(width: 2.0),
                           FlipCard(
                             key: stageCardKey,
                             direction: FlipDirection.HORIZONTAL,
                             front: Container(
                               height: 50.0,
-                              width: 115.0,
+                              width: 110.0,
                               padding: EdgeInsets.only(
                                   left: 10.0,
                                   right: 10.0,
@@ -681,6 +690,7 @@ class _SoilHealthState extends State<SoilHealth> {
                               ),
                             ),
                           ),
+                          SizedBox(width: 2.0),
                           FlipCard(
                             key: harvestCardKey,
                             direction: FlipDirection.HORIZONTAL,
@@ -801,7 +811,8 @@ class _SoilHealthState extends State<SoilHealth> {
               const SizedBox(height: 10.0),
               !dataProvider.isLoading
                   ? Container(
-                      padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.03),
                       child: Container(
                         padding: EdgeInsets.all(13.0),
                         decoration: BoxDecoration(
@@ -891,7 +902,7 @@ class _SoilHealthState extends State<SoilHealth> {
                                                 width: 25.0),
                                           ],
                                         ),
-                                        const SizedBox(width: 5.0),
+                                        const SizedBox(width:1.0),
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -904,7 +915,7 @@ class _SoilHealthState extends State<SoilHealth> {
                                               ),
                                             ),
                                             Container(
-                                              width: 190.0,
+                                              width: 180.0,
                                               height: 117.0,
                                               child: SingleChildScrollView(
                                                 child: Text(
@@ -926,7 +937,7 @@ class _SoilHealthState extends State<SoilHealth> {
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(width: 10.0),
+                                  const SizedBox(width: 3.0),
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,

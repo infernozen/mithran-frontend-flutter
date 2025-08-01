@@ -172,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Container(
                                 child: Text(
-                              "Vanakkam Rohith 🙏",
+                              "Vanakkam Rohit 🙏",
                               style: TextStyle(
                                 fontFamily: "Poppins",
                                 fontSize: 25.0,
@@ -531,9 +531,16 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                 ),
-                const SizedBox(height: 15.0),
+                SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
+                  ),
+
                 Container(
-                  padding: EdgeInsets.only(left: 25.0, right: 20.0),
+                  padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width * 0.06, // 6% of screen width
+                    right: MediaQuery.of(context).size.width * 0.05, // 5% of screen width
+                  ),
+
                   child: Container(
                     padding: EdgeInsets.only(
                         left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
@@ -551,7 +558,10 @@ class _HomePageState extends State<HomePage> {
                               height: 140.0,
                               width: 130.0,
                             ),
-                            const SizedBox(width: 10.0),
+                            SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.018, // 2.5% of screen width
+                              ),
+
                             Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -577,7 +587,7 @@ class _HomePageState extends State<HomePage> {
                                 ]),
                             const Spacer(),
                             Container(
-                              padding: EdgeInsets.all(10.0),
+                               padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.025),
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10.0),

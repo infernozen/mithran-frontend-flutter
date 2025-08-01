@@ -148,14 +148,16 @@ class _FieldLocatorState extends State<FieldLocator> {
             child: GooglePlaceAutoCompleteTextField(
               boxDecoration: BoxDecoration(border: Border.all(width: 0)),
               textEditingController: controller,
-              googleAPIKey: "AIzaSyC2TVVHf30LElef9FuC6DvHhF_7WXL6_Ig",
+              googleAPIKey: "AIzaSyA4A1-OKZNqhZdnin1FABKQ__lb0_Xv7-s",
               textStyle: const TextStyle(
                   fontFamily: "Poppins",
                   fontWeight: FontWeight.w700,
                   fontSize: 17),
               inputDecoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(
-                    vertical: 20.0, horizontal: 14.0),
+                contentPadding: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.height * 0.02, // Adjust vertical padding based on screen height
+                    horizontal: MediaQuery.of(context).size.width * 0.04, // Adjust horizontal padding based on screen width
+                  ),
                 prefixIcon: const Icon(Icons.search, color: Colors.black54),
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.clear, color: Colors.black54),

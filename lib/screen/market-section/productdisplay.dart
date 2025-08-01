@@ -127,7 +127,7 @@ class _ProductDisplayState extends State<ProductDisplay> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 5.0),
+                          const SizedBox(height: 2.0),
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0),
                             child: Text(
@@ -157,8 +157,7 @@ class _ProductDisplayState extends State<ProductDisplay> {
                 },
               ),
             ),
-            const SizedBox(height: 20.0),
-          ],
+            const SizedBox(height: 20.0),          ],
         ),
       ),
     );

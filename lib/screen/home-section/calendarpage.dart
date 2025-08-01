@@ -48,7 +48,10 @@ class _CalendarPageState extends State<CalendarPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 20.0),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.02, // 5% of the screen height
+          ),
+
           Container(
             padding: EdgeInsets.only(left: 20.0, right: 20.0),
             child: Container(
@@ -114,7 +117,10 @@ class _CalendarPageState extends State<CalendarPage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            const SizedBox(height: 10.0),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.02, // 2% of the screen height
+                            ),
+
                             Text(
                               '${day.day}',
                               style: TextStyle(
@@ -260,7 +266,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                 color: Colors.orange,
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.bold,
-                                fontSize: 10.0,
+                                fontSize: 7.0,
                               ),
                             ),
                             const SizedBox(height: 10.0),
@@ -310,164 +316,169 @@ class _CalendarPageState extends State<CalendarPage> {
             ),
           ),
           SizedBox(
-            height: 30,
+            height: MediaQuery.of(context).size.height * 0.01, // Adjust the multiplier as needed
           ),
-          if(_selectedDay!.difference(currentDate).inDays >= 0 && _selectedDay!.difference(currentDate).inDays < widget.provider.dailyForecastList.length)
-          Padding(
-              padding:
-                  const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 15.0),
-              child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: const Color(0xffD2D5DA),
-                      width: 2.0,
+
+          if (_selectedDay!.difference(currentDate).inDays >= 0 &&
+              _selectedDay!.difference(currentDate).inDays <
+                  widget.provider.dailyForecastList.length)
+            Padding(
+                padding: const EdgeInsets.only(
+                    left: 20.0, right: 20.0, bottom: 15.0),
+                child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: const Color(0xffD2D5DA),
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: const Color(0xffFFFFFF),
                     ),
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: const Color(0xffFFFFFF),
-                  ),
-                  child: !widget.provider.isLoading
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                              Padding(
-                                  padding:
-                                      EdgeInsets.only(left: 20.0, top: 20.0),
-                                  child: Text(
-                                    "Weather Report (${_selectedDay.toString().split(" ")[0]})",
-                                    style: TextStyle(
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 18.0),
-                                  )),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Row(
-                                children: [
-                                  const Spacer(),
-                                  Row(children: [
-                                    Image.asset('assets/homepage/rain.png',
-                                        height: 40, width: 40),
-                                    const SizedBox(width: 15.0),
-                                    SizedBox(
-                                      width: 100.0,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                              "${(widget.provider.dailyForecastList[_selectedDay!.difference(currentDate).inDays]['rainPossibility']).toInt()}% chance",
-                                              style: TextStyle(
-                                                  fontFamily: "Poppins",
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 14.0)),
-                                          Text(
-                                              "${widget.provider.dailyForecastList[_selectedDay!.difference(currentDate).inDays]['rainMeasure']}mm rain",
-                                              style: TextStyle(
-                                                  fontFamily: "Poppins",
-                                                  color: Color(0xff848484),
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 12.0)),
-                                        ],
+                    child: !widget.provider.isLoading
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                                Padding(
+                                    padding:
+                                        EdgeInsets.only(left: 20.0, top: 20.0),
+                                    child: Text(
+                                      "Weather Report (${_selectedDay.toString().split(" ")[0]})",
+                                      style: TextStyle(
+                                          fontFamily: "Poppins",
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 18.0),
+                                    )),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Row(
+                                  children: [
+                                    const Spacer(),
+                                    Row(children: [
+                                      Image.asset('assets/homepage/rain.png',
+                                          height: 40, width: 40),
+                                      const SizedBox(width: 15.0),
+                                      SizedBox(
+                                        width: 100.0,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                                "${(widget.provider.dailyForecastList[_selectedDay!.difference(currentDate).inDays]['rainPossibility']).toInt()}% chance",
+                                                style: TextStyle(
+                                                    fontFamily: "Poppins",
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 14.0)),
+                                            Text(
+                                                "${widget.provider.dailyForecastList[_selectedDay!.difference(currentDate).inDays]['rainMeasure']}mm rain",
+                                                style: TextStyle(
+                                                    fontFamily: "Poppins",
+                                                    color: Color(0xff848484),
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12.0)),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ]),
-                                  const Spacer(),
-                                  Row(children: [
-                                    Image.asset('assets/homepage/humidity.png',
-                                        height: 40, width: 40),
-                                    const SizedBox(width: 15.0),
-                                    SizedBox(
-                                      width: 100.0,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                              "${widget.provider.dailyForecastList[_selectedDay!.difference(currentDate).inDays]['humidity']}%",
-                                              style: TextStyle(
-                                                  fontFamily: "Poppins",
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 14.0)),
-                                          Text("Humidity",
-                                              style: TextStyle(
-                                                  fontFamily: "Poppins",
-                                                  color: Color(0xff848484),
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 12.0)),
-                                        ],
+                                    ]),
+                                    const Spacer(),
+                                    Row(children: [
+                                      Image.asset(
+                                          'assets/homepage/humidity.png',
+                                          height: 40,
+                                          width: 40),
+                                      const SizedBox(width: 15.0),
+                                      SizedBox(
+                                        width: 100.0,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                                "${widget.provider.dailyForecastList[_selectedDay!.difference(currentDate).inDays]['humidity']}%",
+                                                style: TextStyle(
+                                                    fontFamily: "Poppins",
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 14.0)),
+                                            Text("Humidity",
+                                                style: TextStyle(
+                                                    fontFamily: "Poppins",
+                                                    color: Color(0xff848484),
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12.0)),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ]),
-                                  const Spacer(),
-                                ],
-                              ),
-                              const SizedBox(height: 20.0),
-                              Row(
-                                children: [
-                                  const Spacer(),
-                                  Row(children: [
-                                    Image.asset('assets/homepage/temp.png',
-                                        height: 40, width: 40),
-                                    const SizedBox(width: 15.0),
-                                    SizedBox(
-                                      width: 100.0,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                              "${(widget.provider.dailyForecastList[_selectedDay!.difference(currentDate).inDays]['temperature']).toStringAsFixed(2)} C°",
-                                              style: TextStyle(
-                                                  fontFamily: "Poppins",
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 14.0)),
-                                          Text(
-                                              "Min ${(widget.provider.dailyForecastList[_selectedDay!.difference(currentDate).inDays]['minTemperature']).toStringAsFixed(2)} C°",
-                                              style: TextStyle(
-                                                  fontFamily: "Poppins",
-                                                  color: Color(0xff848484),
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 12.0)),
-                                        ],
+                                    ]),
+                                    const Spacer(),
+                                  ],
+                                ),
+                                const SizedBox(height: 15.0),
+                                Row(
+                                  children: [
+                                    const Spacer(),
+                                    Row(children: [
+                                      Image.asset('assets/homepage/temp.png',
+                                          height: 40, width: 40),
+                                      const SizedBox(width: 15.0),
+                                      SizedBox(
+                                        width: 100.0,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                                "${(widget.provider.dailyForecastList[_selectedDay!.difference(currentDate).inDays]['temperature']).toStringAsFixed(2)} C°",
+                                                style: TextStyle(
+                                                    fontFamily: "Poppins",
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 14.0)),
+                                            Text(
+                                                "Min ${(widget.provider.dailyForecastList[_selectedDay!.difference(currentDate).inDays]['minTemperature']).toStringAsFixed(2)} C°",
+                                                style: TextStyle(
+                                                    fontFamily: "Poppins",
+                                                    color: Color(0xff848484),
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12.0)),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ]),
-                                  const Spacer(),
-                                  Row(children: [
-                                    Image.asset('assets/homepage/wind.png',
-                                        height: 40, width: 40),
-                                    const SizedBox(width: 15.0),
-                                    SizedBox(
-                                      width: 100.0,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                              "${widget.provider.dailyForecastList[_selectedDay!.difference(currentDate).inDays]['speed']} km/h",
-                                              style: TextStyle(
-                                                  fontFamily: "Poppins",
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 14.0)),
-                                          Text("Wind",
-                                              style: TextStyle(
-                                                  fontFamily: "Poppins",
-                                                  color: Color(0xff848484),
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 12.0)),
-                                        ],
+                                    ]),
+                                    const Spacer(),
+                                    Row(children: [
+                                      Image.asset('assets/homepage/wind.png',
+                                          height: 40, width: 40),
+                                      const SizedBox(width: 15.0),
+                                      SizedBox(
+                                        width: 100.0,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                                "${widget.provider.dailyForecastList[_selectedDay!.difference(currentDate).inDays]['speed']} km/h",
+                                                style: TextStyle(
+                                                    fontFamily: "Poppins",
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 14.0)),
+                                            Text("Wind",
+                                                style: TextStyle(
+                                                    fontFamily: "Poppins",
+                                                    color: Color(0xff848484),
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12.0)),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ]),
-                                  const Spacer(),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 20,
-                              )
-                            ])
-                      : SizedBox(height: 0)))
+                                    ]),
+                                    const Spacer(),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                )
+                              ])
+                        : SizedBox(height: 0)))
         ],
       ),
     );

@@ -18,14 +18,14 @@ class FarmProvider extends ChangeNotifier {
     weatherDataList = [];
     try {
       var soilResponse = await http.get(
-        Uri.parse('http://34.93.22.161:5000/soil/currentSoilData')
+        Uri.parse('https://mithran-backend-stellar-jaguar-xw.cfapps.us10-001.hana.ondemand.com/soil/currentSoilData')
             .replace(queryParameters: {
           'polyid': polygonId,
         }),
       );
 
       var msCropResponse = await http.get(
-        Uri.parse('http://34.93.22.161:5000/soil/mithranScoreForCrop')
+        Uri.parse('https://mithran-backend-stellar-jaguar-xw.cfapps.us10-001.hana.ondemand.com/soil/mithranScoreForCrop')
             .replace(queryParameters: {
           'polyid': polygonId,
           'crop': crop,
@@ -33,14 +33,14 @@ class FarmProvider extends ChangeNotifier {
       );
 
       var msResponse = await http.get(
-        Uri.parse('http://34.93.22.161:5000/soil/mithranScore')
+        Uri.parse('https://mithran-backend-stellar-jaguar-xw.cfapps.us10-001.hana.ondemand.com/soil/mithranScore')
             .replace(queryParameters: {
           'polyid': polygonId,
         }),
       );
 
       var weatherResponse = await http.get(
-          Uri.parse('http://34.93.22.161:5000/weather/currentWeather')
+          Uri.parse('https://mithran-backend-stellar-jaguar-xw.cfapps.us10-001.hana.ondemand.com/weather/currentWeather')
               .replace(queryParameters: {
         'lat': latitude,
         'lon': longitude,
