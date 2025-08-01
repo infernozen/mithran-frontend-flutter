@@ -110,6 +110,8 @@ class _SoilHealthState extends State<SoilHealth> {
               selectedCrop = crop;
               selectedIndex = index;
               _selectedInsight = 0;
+              stage = getCurrentStage(
+                  selectedCrop, cropFieldList[selectedIndex].sowedDate);
               fetchFarmData(
                   cropFieldList[selectedIndex].polygonId,
                   cropFieldList[selectedIndex].Crop,

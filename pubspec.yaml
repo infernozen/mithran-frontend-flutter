@@ -66,6 +66,9 @@ dependencies:
   google_generative_ai: ^0.4.5
   flip_card: ^0.7.0
   font_awesome_flutter: ^10.7.0
+  flutter_svg: ^2.0.10+1
+  pod_player: ^0.2.2
+  share_plus: ^10.0.0
 
 dev_dependencies:
   flutter_test:
@@ -128,6 +131,11 @@ flutter:
     - assets/weathericons/
     - assets/bottomnavbar/
     - assets/model/cropmodels/
+    - assets/Farming_Guides/
+    - assets/GovtSchemes/
+    - assets/Pest_and_Disease/
+    - assets/Schemes_and_Subsidies/
+    - assets/Sustainable_Farming/
 
   fonts:
     - family: Poppins
