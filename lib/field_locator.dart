@@ -148,7 +148,7 @@ class _FieldLocatorState extends State<FieldLocator> {
             child: GooglePlaceAutoCompleteTextField(
               boxDecoration: BoxDecoration(border: Border.all(width: 0)),
               textEditingController: controller,
-              googleAPIKey: "AIzaSyCy6wap9MQFTtb07q7YS1LeYsLESXu28T0",
+              googleAPIKey: "AIzaSyA4A1-OKZNqhZdnin1FABKQ__lb0_Xv7-s",
               textStyle: const TextStyle(
                   fontFamily: "Poppins",
                   fontWeight: FontWeight.w700,
