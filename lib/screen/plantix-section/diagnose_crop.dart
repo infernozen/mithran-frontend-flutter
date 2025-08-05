@@ -99,9 +99,7 @@ class _DiagnoseCropState extends State<DiagnoseCrop> {
               onPressed: () {
                 _showLanguageSelector(dataProvider);
               }),
-          SizedBox(
-            width: 10,
-          )
+          const SizedBox(width: 10)
         ],
         leading: IconButton(
             icon: const Icon(Icons.chevron_left, size: 40),
@@ -113,8 +111,7 @@ class _DiagnoseCropState extends State<DiagnoseCrop> {
           children: [
             Text(
               "Diagnose results",
-              style:
-                  TextStyle(fontFamily: "Poppins", fontWeight: FontWeight.w600),
+              style: TextStyle(fontFamily: "Poppins", fontWeight: FontWeight.w600),
             ),
           ],
         ),
@@ -124,402 +121,353 @@ class _DiagnoseCropState extends State<DiagnoseCrop> {
         titleSpacing: 0,
       ),
       body: dataProvider.isLoading
-          ? Container(
-              height: size.height,
-              width: size.width,
-              color: const Color.fromRGBO(247, 247, 247, 1),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Lottie.asset('assets/Loading.json', width: size.width * 0.8),
-                  const SizedBox(height: 50),
-                  SizedBox(
-                    width: size.width * 0.75,
-                    child: const Text(
-                      "Mithran takes care of your crop like it's ours !",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700),
-                    ),
-                  )
-                ],
+          ? _buildLoadingScreen(size)
+          : _buildResultScreen(context, dataProvider, size),
+    );
+  }
+
+  Widget _buildLoadingScreen(Size size) {
+    return Container(
+      height: size.height,
+      width: size.width,
+      color: const Color.fromRGBO(247, 247, 247, 1),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.asset('assets/Loading.json', width: size.width * 0.8),
+          const SizedBox(height: 50),
+          SizedBox(
+            width: size.width * 0.75,
+            child: const Text(
+              "Mithran takes care of your crop like it's ours!",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
               ),
-            )
-          : Container(
-              height: size.height,
-              width: size.width,
-              color: const Color.fromRGBO(247, 247, 247, 1),
-              child: Column(
-                children: [
-                  const SizedBox(height: 25),
-                  Container(
-                    width: size.width * 0.9,
-                    height: size.height * 0.075,
-                    decoration: BoxDecoration(
-                        color: const Color.fromRGBO(233, 241, 254, 1),
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        const Icon(Icons.info_outline,
-                            color: Color.fromRGBO(54, 68, 138, 1), size: 32),
-                        SizedBox(
-                          width: size.width * 0.75,
-                          child: const Text(
-                            "Please check if any of the below diseases match the damage on your crop",
-                            style: TextStyle(
-                              color: Color.fromRGBO(54, 68, 138, 1),
-                              fontFamily: "Poppins",
-                            ),
-                            maxLines: 2,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  if (!dataProvider.isLoading &&
-                      !dataProvider.isHealthy &&
-                      !dataProvider.isNotFound)
-                    Container(
-                      width: size.width * 0.9,
-                      height: size.height * 0.6,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                              color:
-                                  const Color.fromRGBO(223, 221, 221, 0.957))),
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 10),
-                          if (!dataProvider.isLoading)
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildResultScreen(BuildContext context, PlantixService dataProvider, Size size) {
+    return Container(
+      height: size.height,
+      width: size.width,
+      color: const Color.fromRGBO(247, 247, 247, 1),
+      child: Column(
+        children: [
+          const SizedBox(height: 25),
+          _buildInfoBanner(size),
+          const SizedBox(height: 20),
+          if (!dataProvider.isHealthy && !dataProvider.isNotFound)
+            _buildDiseaseCard(context, dataProvider, size),
+          if (dataProvider.isHealthy && !dataProvider.isNotFound)
+            _buildHealthyCard(size),
+          if (dataProvider.isNotFound)
+            _buildNotFoundCard(size),
+          const SizedBox(height: 20),
+          _buildChatCard(context, size),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoBanner(Size size) {
+    return Container(
+      width: size.width * 0.9,
+      height: size.height * 0.075,
+      decoration: BoxDecoration(
+        color: const Color.fromRGBO(233, 241, 254, 1),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          const Icon(Icons.info_outline, color: Color.fromRGBO(54, 68, 138, 1), size: 32),
+          SizedBox(
+            width: size.width * 0.75,
+            child: const Text(
+              "Please check if any of the below diseases match the damage on your crop",
+              style: TextStyle(
+                color: Color.fromRGBO(54, 68, 138, 1),
+                fontFamily: "Poppins",
+              ),
+              maxLines: 2,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDiseaseCard(BuildContext context, PlantixService dataProvider, Size size) {
+    return Container(
+      width: size.width * 0.9,
+      height: size.height * 0.6,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: const Color.fromRGBO(223, 221, 221, 0.957)),
+      ),
+      child: Column(
+        children: [
+          const SizedBox(height: 10),
+          SizedBox(
+            width: size.width * 0.81,
+            child: Text(
+              dataProvider.title,
+              maxLines: 1,
+              style: const TextStyle(
+                overflow: TextOverflow.ellipsis,
+                fontFamily: "Poppins",
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            width: size.width * 0.83,
+            height: size.height * 0.465,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Row(
+                  children: [
+                    Icon(Icons.energy_savings_leaf_outlined, size: 28),
+                    SizedBox(width: 10),
+                    Text(
+                      "Symptoms",
+                      style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  height: size.height * 0.22,
+                  child: ListView.builder(
+                    itemCount: dataProvider.symptoms.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: Row(
+                          children: [
+                            const Text(" • ", style: TextStyle(fontSize: 20)),
                             SizedBox(
-                              width: size.width * 0.81,
+                              width: size.width * 0.66,
                               child: Text(
-                                dataProvider.title,
-                                maxLines: 1,
-                                style: const TextStyle(
-                                    overflow: TextOverflow.ellipsis,
-                                    fontFamily: "Poppins",
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w700),
+                                dataProvider.symptoms[index],
+                                style: const TextStyle(fontWeight: FontWeight.w500),
                               ),
                             ),
-                          const SizedBox(height: 10),
-                          SizedBox(
-                            width: size.width * 0.83,
-                            height: size.height * 0.465,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: double.infinity,
-                                  height: size.height * 0.04,
-                                  child: const Row(
-                                    children: [
-                                      Icon(Icons.energy_savings_leaf_outlined,
-                                          size: 28),
-                                      SizedBox(width: 10),
-                                      Text(
-                                        "Symptoms",
-                                        style: TextStyle(
-                                            fontFamily: "Poppins",
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                if (!dataProvider.isLoading)
-                                  SizedBox(
-                                    width: double.infinity,
-                                    height: size.height * 0.22,
-                                    child: ListView.builder(
-                                      // physics:
-                                      //     const NeverScrollableScrollPhysics(),
-                                      itemCount: dataProvider.symptoms.length,
-                                      itemBuilder: (context, index) {
-                                        return ListTile(
-                                          contentPadding:
-                                              const EdgeInsets.all(0),
-                                          title: Row(
-                                            children: [
-                                              const Text(
-                                                " •  ",
-                                                style: TextStyle(
-                                                    fontFamily: "Poppins",
-                                                    fontSize: 20),
-                                              ),
-                                              SizedBox(
-                                                width: size.width * 0.66,
-                                                child: Text(
-                                                  dataProvider.symptoms[index],
-                                                  style: const TextStyle(
-                                                      fontFamily: "Poppins",
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                const SizedBox(height: 10),
-                                if (!dataProvider.isLoading &&
-                                    !dataProvider.isNotFound &&
-                                    !dataProvider.isHealthy)
-                                  Container(
-                                      height: size.height * 0.19,
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      child: GridView.count(
-                                        crossAxisCount: 2,
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(20),
-                                                    bottomLeft:
-                                                        Radius.circular(20)),
-                                            child: SizedBox(
-                                              height: double.infinity,
-                                              child: Image.network(
-                                                dataProvider.imageReferences[0],
-                                                fit: BoxFit.fill,
-                                              ),
-                                            ),
-                                          ),
-                                          Column(
-                                            children: <Widget>[
-                                              ClipRRect(
-                                                borderRadius:
-                                                    const BorderRadius.only(
-                                                        topRight:
-                                                            Radius.circular(
-                                                                20)),
-                                                child: SizedBox(
-                                                  width: size.width * 0.4,
-                                                  height: size.height * 0.094,
-                                                  child: Image.network(
-                                                      dataProvider
-                                                          .imageReferences[1],
-                                                      fit: BoxFit.cover),
-                                                ),
-                                              ),
-                                              const SizedBox(height: 3),
-                                              ClipRRect(
-                                                borderRadius:
-                                                    const BorderRadius.only(
-                                                        bottomRight:
-                                                            Radius.circular(
-                                                                20)),
-                                                child: SizedBox(
-                                                  width: size.width * 0.4,
-                                                  height: size.height * 0.094,
-                                                  child: Image.network(
-                                                      dataProvider
-                                                          .imageReferences[2],
-                                                      fit: BoxFit.cover),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ))
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          SizedBox(
-                            width: size.width * 0.7,
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => TreatmentPage(
-                                        title: dataProvider.title,
-                                        pathogen: dataProvider.pathogen,
-                                        chemicalTreatment:
-                                            dataProvider.chemicalTreatment,
-                                        organicTreatment:
-                                            dataProvider.organicTreatment,
-                                        refImg: dataProvider.imageReferences[0],
-                                      ),
-                                    ),
-                                  );
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith<Color>(
-                                    (Set<MaterialState> states) {
-                                      if (states
-                                          .contains(MaterialState.pressed)) {
-                                        return Colors
-                                            .blueAccent; // Color when the button is pressed
-                                      }
-                                      return const Color.fromRGBO(
-                                          1, 88, 219, 1);
-                                    },
-                                  ),
-                                ),
-                                child: const Text(
-                                  "See treatment",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: "Poppins",
-                                      fontSize: 18),
-                                )),
-                          )
-                        ],
-                      ),
-                    ),
-                  if (!dataProvider.isLoading &&
-                      dataProvider.isHealthy &&
-                      !dataProvider.isNotFound)
-                    Container(
-                        width: size.width * 0.9,
-                        height: size.height * 0.6,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(
-                                color: const Color.fromRGBO(
-                                    223, 221, 221, 0.957))),
-                        child: Column(children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(top: 40.0, bottom: 50.0),
-                            child: Lottie.asset('assets/SeemsHealthy.json',
-                                width: size.width * 0.75),
-                          ),
-                          SizedBox(
-                            width: size.width * 0.75,
-                            child: const Text(
-                              "Everything looks great. No signs of pests or diseases detected. Keep up the good work!",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          )
-                        ])),
-                  if (!dataProvider.isLoading && dataProvider.isNotFound)
-                    Container(
-                        width: size.width * 0.9,
-                        height: size.height * 0.6,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(
-                                color: const Color.fromRGBO(
-                                    223, 221, 221, 0.957))),
-                        child: Column(children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(top: 40.0, bottom: 50.0),
-                            child: Lottie.asset('assets/Error404.json',
-                                width: size.width * 0.75),
-                          ),
-                          SizedBox(
-                            width: size.width * 0.75,
-                            child: const Text(
-                              "Unable to detect a plant 🌱\n Please verify the details and try again. If the issue persists, contact support.",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          )
-                        ])),
-                  const SizedBox(height: 20),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Chat(ongetBack: () {
-                                    Navigator.pop(context);
-                                  })));
+                          ],
+                        ),
+                      );
                     },
-                    child: Container(
-                      width: size.width * 0.9,
-                      height: size.height * 0.11,
-                      decoration: BoxDecoration(
-                          color: const Color.fromRGBO(204, 234, 232, 1),
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                              color:
-                                  const Color.fromRGBO(223, 221, 221, 0.957))),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          const Icon(Icons.info_outline,
-                              color: Colors.black, size: 32),
-                          SizedBox(
-                            width: size.width * 0.62,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: 5),
-                                const Text(
-                                  "Can't find the right result?",
-                                  style: TextStyle(
-                                      fontFamily: "Poppins",
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                                RichText(
-                                  text: const TextSpan(
-                                    style: TextStyle(
-                                      fontFamily: "Poppins",
-                                      color: Colors
-                                          .black, // Specify the default color for the text
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: "Click here to ask ",
-                                      ),
-                                      TextSpan(
-                                        text: "Uzhavan",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text:
-                                            " our personalized farm assistant to help",
-                                      ),
-                                    ],
-                                  ),
-                                  maxLines: 2,
-                                ),
-                                const SizedBox(height: 5),
-                              ],
-                            ),
-                          ),
-                          const Icon(Icons.chevron_right_sharp,
-                              color: Colors.black, size: 32),
-                        ],
-                      ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                _buildImageGrid(dataProvider, size),
+              ],
+            ),
+          ),
+          const SizedBox(height: 5),
+          _buildTreatmentButton(context, dataProvider, size),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildImageGrid(PlantixService dataProvider, Size size) {
+    return Container(
+      height: size.height * 0.19,
+      width: double.infinity,
+      child: GridView.count(
+        crossAxisCount: 2,
+        children: [
+          if (dataProvider.imageReferences.length > 0)
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                bottomLeft: Radius.circular(20),
+              ),
+              child: Image.network(
+                dataProvider.imageReferences[0],
+                fit: BoxFit.fill,
+              ),
+            ),
+          if (dataProvider.imageReferences.length > 1)
+            Column(
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(topRight: Radius.circular(20)),
+                  child: Image.network(
+                    dataProvider.imageReferences[1],
+                    width: size.width * 0.4,
+                    height: size.height * 0.094,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                if (dataProvider.imageReferences.length > 2)
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20)),
+                    child: Image.network(
+                      dataProvider.imageReferences[2],
+                      width: size.width * 0.4,
+                      height: size.height * 0.094,
+                      fit: BoxFit.cover,
                     ),
-                  )
+                  ),
+              ],
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTreatmentButton(BuildContext context, PlantixService dataProvider, Size size) {
+    return SizedBox(
+      width: size.width * 0.7,
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TreatmentPage(
+                title: dataProvider.title,
+                pathogen: dataProvider.pathogen,
+                chemicalTreatment: dataProvider.chemicalTreatment,
+                organicTreatment: dataProvider.organicTreatment,
+                refImg: dataProvider.imageReferences.isNotEmpty
+                    ? dataProvider.imageReferences[0]
+                    : '',
+              ),
+            ),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color.fromRGBO(1, 88, 219, 1),
+        ),
+        child: const Text(
+          "See treatment",
+          style: TextStyle(
+            fontFamily: "Poppins",
+            fontSize: 18,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHealthyCard(Size size) {
+    return _buildMessageCard(
+      size,
+      animation: 'assets/SeemsHealthy.json',
+      message:
+      "Everything looks great. No signs of pests or diseases detected. Keep up the good work!",
+    );
+  }
+
+  Widget _buildNotFoundCard(Size size) {
+    return _buildMessageCard(
+      size,
+      animation: 'assets/Error404.json',
+      message:
+      "Unable to detect a plant 🌱\nPlease verify the details and try again. If the issue persists, contact support.",
+    );
+  }
+
+  Widget _buildMessageCard(Size size, {required String animation, required String message}) {
+    return Container(
+      width: size.width * 0.9,
+      height: size.height * 0.6,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: const Color.fromRGBO(223, 221, 221, 0.957)),
+      ),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 40.0, bottom: 50.0),
+            child: Lottie.asset(animation, width: size.width * 0.75),
+          ),
+          SizedBox(
+            width: size.width * 0.75,
+            child: Text(
+              message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildChatCard(BuildContext context, Size size) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Chat(
+              ongetBack: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+        );
+      },
+      child: Container(
+        width: size.width * 0.9,
+        height: size.height * 0.11,
+        decoration: BoxDecoration(
+          color: const Color.fromRGBO(204, 234, 232, 1),
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: const Color.fromRGBO(223, 221, 221, 0.957)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            const Icon(Icons.info_outline, color: Colors.black, size: 32),
+            SizedBox(
+              width: size.width * 0.62,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  SizedBox(height: 5),
+                  Text(
+                    "Can't find the right result?",
+                    style: TextStyle(fontFamily: "Poppins", fontSize: 17, fontWeight: FontWeight.w700),
+                  ),
+                  Text(
+                    "Click here to ask Uzhavan, our personalized farm assistant to help",
+                    maxLines: 2,
+                  ),
+                  SizedBox(height: 5),
                 ],
               ),
             ),
+            const Icon(Icons.chevron_right_sharp, color: Colors.black, size: 32),
+          ],
+        ),
+      ),
     );
   }
 }
