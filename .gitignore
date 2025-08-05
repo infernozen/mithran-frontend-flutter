@@ -41,3 +41,10 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Android build artifacts
+android/app/.cxx/
+
+# iOS and macOS Flutter build artifacts
+ios/Flutter/
+macos/Flutter/

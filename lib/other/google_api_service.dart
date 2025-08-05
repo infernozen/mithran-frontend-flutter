@@ -3,7 +3,7 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 
 class ApiService {
   Future<ChatModel> queryDialogflow(String query, String sessionId) async {
-    final apiKey = "AIzaSyA4A1-OKZNqhZdnin1FABKQ__lb0_Xv7-s";
+    final apiKey = "AIzaSyDfdzER1DCBjXMD4uYhNh158lphiUsaMvA";
 
     final model = GenerativeModel(
       model: 'gemini-1.5-flash',

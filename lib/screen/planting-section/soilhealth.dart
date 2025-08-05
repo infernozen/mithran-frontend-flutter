@@ -62,6 +62,7 @@ class _SoilHealthState extends State<SoilHealth> {
   GlobalKey<FlipCardState> sowedCardKey = GlobalKey<FlipCardState>();
   GlobalKey<FlipCardState> stageCardKey = GlobalKey<FlipCardState>();
   GlobalKey<FlipCardState> harvestCardKey = GlobalKey<FlipCardState>();
+  Timer? _timer;
 
   void trendingDecodeJson(trendData, trendingData) {
     var data = trendingData['trendData'];
@@ -144,7 +145,6 @@ class _SoilHealthState extends State<SoilHealth> {
       "Crop": "Wheat",
       "sowedDate": "2024-07-15",
     },
-
     {
       "polygonId": "66c57aed93997d119bbff7bd",
       "fieldName": "Resting Ground",
@@ -305,14 +305,20 @@ class _SoilHealthState extends State<SoilHealth> {
         getCurrentStage(selectedCrop, cropFieldList[selectedIndex].sowedDate);
     print(stage);
     print(fieldData);
-    Timer.periodic(Duration(seconds: 5), (timer) {
-      if (!sowedCardKey.currentState!.isFront) {
+    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
+      if (mounted &&
+          sowedCardKey.currentState != null &&
+          !sowedCardKey.currentState!.isFront) {
         sowedCardKey.currentState!.toggleCard();
       }
-      if (!stageCardKey.currentState!.isFront) {
+      if (mounted &&
+          stageCardKey.currentState != null &&
+          !stageCardKey.currentState!.isFront) {
         stageCardKey.currentState!.toggleCard();
       }
-      if (!harvestCardKey.currentState!.isFront) {
+      if (mounted &&
+          harvestCardKey.currentState != null &&
+          !harvestCardKey.currentState!.isFront) {
         harvestCardKey.currentState!.toggleCard();
       }
     });
@@ -328,6 +334,12 @@ class _SoilHealthState extends State<SoilHealth> {
       String longitude) {
     final dataProvider = Provider.of<FarmProvider>(context, listen: false);
     dataProvider.fetchSoilData(polygonId, selectedCrop, latitude, longitude);
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -582,11 +594,13 @@ class _SoilHealthState extends State<SoilHealth> {
                     const SizedBox(height: 15.0),
                     Container(
                       padding: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.02, // 2% of the screen width
-                        right: MediaQuery.of(context).size.width * 0.015, // 2% of the screen width
-                        bottom: MediaQuery.of(context).size.height * 0.01, // 1% of the screen height
+                        left: MediaQuery.of(context).size.width *
+                            0.02, // 2% of the screen width
+                        right: MediaQuery.of(context).size.width *
+                            0.015, // 2% of the screen width
+                        bottom: MediaQuery.of(context).size.height *
+                            0.01, // 1% of the screen height
                       ),
-
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -779,16 +793,19 @@ class _SoilHealthState extends State<SoilHealth> {
                   ? GraphComponent(
                       updateActiveTab: updateActiveTab,
                       soilData: SoilData(
-                          date: dataProvider.farmData['date'],
-                          moisture: dataProvider.farmData['moisture'],
+                          date: dataProvider.farmData['date'] ?? DateTime.now(),
+                          moisture: dataProvider.farmData['moisture'] ?? 0.0,
                           temperatureGradient: calculateTemperatureGradient(
-                              dataProvider.farmData['t0'],
-                              dataProvider.farmData['t10'])),
+                              dataProvider.farmData['t0'] ?? 0.0,
+                              dataProvider.farmData['t10'] ?? 0.0)),
                       vegetationData: VegetationData(
-                          date: dataProvider.vegetationData['date'],
-                          growthRate: dataProvider.vegetationData['ndvi'],
+                          date: dataProvider.vegetationData['date'] ??
+                              DateTime.now(),
+                          growthRate:
+                              dataProvider.vegetationData['ndvi'] ?? 0.0,
                           healthIndex:
-                              dataProvider.vegetationData['mithranScore']),
+                              dataProvider.vegetationData['mithranScore'] ??
+                                  0.0),
                       weatherData: dataProvider.weatherDataList)
                   : Container(
                       padding: EdgeInsets.only(left: 25.0, right: 25.0),
@@ -858,10 +875,10 @@ class _SoilHealthState extends State<SoilHealth> {
                                           width: 275.0,
                                           child: Text(
                                             _selectedInsight == 0
-                                                ? "${insightProvider.findInsight(dataProvider.farmData['moisture'], calculateTemperatureGradient(dataProvider.farmData['t0'], dataProvider.farmData['t10']))["Condition"]}"
+                                                ? "${insightProvider.findInsight(dataProvider.farmData['moisture'] ?? 0.0, calculateTemperatureGradient(dataProvider.farmData['t0'] ?? 0.0, dataProvider.farmData['t10'] ?? 0.0))["Condition"]}"
                                                 : _selectedInsight == 1
-                                                    ? "${dataProvider.vegetationData["condition"]}"
-                                                    : "${dataProvider.weatherData["condition"]}",
+                                                    ? "${dataProvider.vegetationData["condition"] ?? "No data available"}"
+                                                    : "${dataProvider.weatherData["condition"] ?? "No data available"}",
                                             style: TextStyle(
                                               fontFamily: "Poppins",
                                               fontWeight: FontWeight.w500,
@@ -902,7 +919,7 @@ class _SoilHealthState extends State<SoilHealth> {
                                                 width: 25.0),
                                           ],
                                         ),
-                                        const SizedBox(width:1.0),
+                                        const SizedBox(width: 1.0),
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -920,10 +937,10 @@ class _SoilHealthState extends State<SoilHealth> {
                                               child: SingleChildScrollView(
                                                 child: Text(
                                                   _selectedInsight == 0
-                                                      ? "${insightProvider.findInsight(dataProvider.farmData['moisture'], calculateTemperatureGradient(dataProvider.farmData['t0'], dataProvider.farmData['t10']))["Insight"]}"
+                                                      ? "${insightProvider.findInsight(dataProvider.farmData['moisture'] ?? 0.0, calculateTemperatureGradient(dataProvider.farmData['t0'] ?? 0.0, dataProvider.farmData['t10'] ?? 0.0))["Insight"]}"
                                                       : _selectedInsight == 1
-                                                          ? "${dataProvider.vegetationData["message"]}"
-                                                          : "${dataProvider.weatherData["message"]}",
+                                                          ? "${dataProvider.vegetationData["message"] ?? "No data available"}"
+                                                          : "${dataProvider.weatherData["message"] ?? "No data available"}",
                                                   style: TextStyle(
                                                     fontFamily: "Poppins",
                                                     fontWeight: FontWeight.w500,
@@ -986,15 +1003,10 @@ class _SoilHealthState extends State<SoilHealth> {
                                             const SizedBox(height: 5.0),
                                             Text(
                                               _selectedInsight == 0
-                                                  ? "${double.parse(dataProvider.farmData['moisture'].toString()).toStringAsFixed(2)} m³/m³"
+                                                  ? "${(dataProvider.farmData['moisture'] ?? 0.0).toStringAsFixed(2)} m³/m³"
                                                   : _selectedInsight == 1
-                                                      ? "${double.parse(dataProvider.vegetationData["mithranScore"].toString()).toStringAsFixed(2)}"
-                                                      : double.parse(
-                                                              dataProvider
-                                                                  .weatherData[
-                                                                      "rain"]
-                                                                  .toString())
-                                                          .toStringAsFixed(2),
+                                                      ? "${(dataProvider.vegetationData["mithranScore"] ?? 0.0).toStringAsFixed(2)}"
+                                                      : "${(dataProvider.weatherData["rain"] ?? 0.0).toStringAsFixed(2)}",
                                               style: TextStyle(
                                                 fontFamily: "Poppins",
                                                 fontWeight: FontWeight.w700,
@@ -1056,10 +1068,10 @@ class _SoilHealthState extends State<SoilHealth> {
                                             const SizedBox(height: 5.0),
                                             Text(
                                               _selectedInsight == 0
-                                                  ? "${calculateTemperatureGradient(dataProvider.farmData['t0'], dataProvider.farmData['t10']).toStringAsFixed(2)}"
+                                                  ? "${calculateTemperatureGradient(dataProvider.farmData['t0'] ?? 0.0, dataProvider.farmData['t10'] ?? 0.0).toStringAsFixed(2)}"
                                                   : _selectedInsight == 1
-                                                      ? "${double.parse(dataProvider.vegetationData['ndvi'].toString()).toStringAsFixed(2)}"
-                                                      : "${dataProvider.weatherData["pressure"]} hPa",
+                                                      ? "${(dataProvider.vegetationData['ndvi'] ?? 0.0).toStringAsFixed(2)}"
+                                                      : "${dataProvider.weatherData["pressure"] ?? 0} hPa",
                                               style: TextStyle(
                                                 fontFamily: "Poppins",
                                                 fontWeight: FontWeight.w700,

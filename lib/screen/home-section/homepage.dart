@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
     'Sunny': ['01d', '02d'],
     'Cloudy': ['04d', '04n'],
   };
-  String weather = "";
+  String weather = "Sunny"; // Default weather category
 
   void saveData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -78,12 +78,18 @@ class _HomePageState extends State<HomePage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final provider = Provider.of<WeatherProvider>(context);
-    final iconCode = provider.currentData['weather'][0]['icon'];
-    final weatherCategory = getWeatherCategory(iconCode);
 
-    setState(() {
-      weather = weatherCategory;
-    });
+    // Check if currentData is not null and has the required structure
+    if (provider.currentData.isNotEmpty &&
+        provider.currentData['weather'] != null &&
+        provider.currentData['weather'].isNotEmpty) {
+      final iconCode = provider.currentData['weather'][0]['icon'];
+      final weatherCategory = getWeatherCategory(iconCode);
+
+      setState(() {
+        weather = weatherCategory;
+      });
+    }
   }
 
   @override
@@ -532,15 +538,15 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
-                  ),
-
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
                 Container(
                   padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.06, // 6% of screen width
-                    right: MediaQuery.of(context).size.width * 0.05, // 5% of screen width
+                    left: MediaQuery.of(context).size.width *
+                        0.06, // 6% of screen width
+                    right: MediaQuery.of(context).size.width *
+                        0.05, // 5% of screen width
                   ),
-
                   child: Container(
                     padding: EdgeInsets.only(
                         left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
@@ -559,9 +565,9 @@ class _HomePageState extends State<HomePage> {
                               width: 130.0,
                             ),
                             SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.018, // 2.5% of screen width
-                              ),
-
+                              width: MediaQuery.of(context).size.width *
+                                  0.018, // 2.5% of screen width
+                            ),
                             Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -587,7 +593,8 @@ class _HomePageState extends State<HomePage> {
                                 ]),
                             const Spacer(),
                             Container(
-                               padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.025),
+                              padding: EdgeInsets.all(
+                                  MediaQuery.of(context).size.width * 0.025),
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10.0),

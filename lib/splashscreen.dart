@@ -29,14 +29,17 @@ class _SplashScreenState extends State<SplashScreen> {
   ];
 
   int _index = 0;
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
-    Timer.periodic(Duration(seconds: 3), (timer) {
-      setState(() {
-        _index = (_index + 1) % _alignments.length;
-      });
+    _timer = Timer.periodic(Duration(seconds: 3), (timer) {
+      if (mounted) {
+        setState(() {
+          _index = (_index + 1) % _alignments.length;
+        });
+      }
     });
     SharedPreferences.getInstance().then((prefs) {
       prefs.remove('fieldDataList');
@@ -50,11 +53,19 @@ class _SplashScreenState extends State<SplashScreen> {
 
     final dataProvider = Provider.of<WeatherProvider>(context, listen: false);
     dataProvider.fetchWeatherData("28.4164096", "77.0932736").then((_) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => InitPage()),
-      );
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => InitPage()),
+        );
+      }
     });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override

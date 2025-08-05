@@ -18,7 +18,15 @@ class _EditPageState extends State<EditPage> {
     "Coffee Beans",
     "Corn",
     "Cotton",
-    "Oil"
+    "Green Tea",
+    "Onion",
+    "Oil",
+    "Potato",
+    "Rice",
+    "Soybean",
+    "Sugar Cane",
+    "Tomato",
+    "Wheat"
   ];
   TextEditingController fieldNameController = TextEditingController();
   @override
@@ -231,29 +239,20 @@ class _EditPageState extends State<EditPage> {
                     Text("Crop Information",
                         style: TextStyle(color: Colors.grey[600])),
                     const SizedBox(height: 10.0),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.black,
-                        backgroundColor: Colors.white, // Text color
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 12.0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          side: BorderSide(color: Colors.grey[600]!),
-                        ),
-                        elevation: 0, // No shadow
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey[600]!),
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
-                      onPressed: () {
-                        showMenu<String>(
-                          context: context,
-                          position: RelativeRect.fromLTRB(
-                            MediaQuery.of(context).size.width - 120,
-                            100,
-                            0,
-                            0,
-                          ),
-                          items: crops.map((String value) {
-                            return PopupMenuItem<String>(
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: _selectedCrop,
+                          isExpanded: true,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 12.0),
+                          items: crops
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
                               value: value,
                               child: Text(
                                 value,
@@ -265,33 +264,21 @@ class _EditPageState extends State<EditPage> {
                               ),
                             );
                           }).toList(),
-                          initialValue: _selectedCrop,
-                        ).then((String? newValue) {
-                          if (newValue != null) {
+                          onChanged: (String? newValue) {
                             setState(() {
-                              _selectedCrop = newValue;
+                              _selectedCrop = newValue!;
                             });
-                          }
-                        });
-                      },
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              _selectedCrop,
-                              style: TextStyle(
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          Icon(
-                            Icons.keyboard_arrow_right,
+                          },
+                          icon: Icon(
+                            Icons.keyboard_arrow_down,
                             color: Colors.black,
                           ),
-                        ],
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20.0),

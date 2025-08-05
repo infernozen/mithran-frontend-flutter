@@ -1,8 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:pod_player/pod_player.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:video_player/video_player.dart';
+import 'package:chewie/chewie.dart';
 
 class YouTubePlayerScreen extends StatefulWidget {
   final String videoId;
@@ -14,59 +15,127 @@ class YouTubePlayerScreen extends StatefulWidget {
 }
 
 class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
-  late PodPlayerController _controller;
   bool isFullScreen = false;
   bool videoLike = false;
   bool videoSound = false;
   bool bookmark = false;
   late String authorName = '';
   late String title = '';
+  bool _isLoading = true;
+  bool _hasError = false;
+  String _errorMessage = '';
+
+  late VideoPlayerController _videoPlayerController;
+  ChewieController? _chewieController;
 
   @override
   void initState() {
     super.initState();
-    _controller = PodPlayerController(
-        playVideoFrom:
-            PlayVideoFrom.youtube('https://www.youtube.com/shorts/Soj8QxH-bto'),
-        podPlayerConfig: const PodPlayerConfig(
-            autoPlay: true, isLooping: false, videoQualityPriority: [720, 360]))
-      ..initialise()
-      ..addListener(() {
-        if (_controller.videoPlayerValue?.hasError == true) {
-          print(
-              'Video Player Error: ${_controller.videoPlayerValue?.errorDescription}');
-        }
-      });
-
-    // _loadVideoMetaData();
-
-    _controller.addListener(_onControllerUpdate);
+    _initializeVideoPlayer();
   }
 
-  void _onControllerUpdate() {
-    if (mounted &&
-        _controller.videoPlayerValue != null &&
-        _controller.videoPlayerValue!.isCompleted) {
-      _controller.removeListener(_onControllerUpdate);
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pop(context);
-      });
+  void _initializeVideoPlayer() async {
+    try {
+      // Use a sample video URL that works with video_player
+      // You can replace this with your actual video URLs
+      String videoUrl =
+          'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+
+      _videoPlayerController = VideoPlayerController.network(videoUrl);
+
+      await _videoPlayerController.initialize();
+
+      _chewieController = ChewieController(
+        videoPlayerController: _videoPlayerController,
+        autoPlay: true,
+        looping: false,
+        allowFullScreen: true,
+        allowMuting: true,
+        showControls: true,
+        materialProgressColors: ChewieProgressColors(
+          playedColor: Colors.red,
+          handleColor: Colors.red,
+          backgroundColor: Colors.grey,
+          bufferedColor: Colors.grey[300]!,
+        ),
+        placeholder: Container(
+          color: Colors.black,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.play_circle_fill,
+                  color: Colors.white,
+                  size: 80,
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Loading Video...',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        errorBuilder: (context, errorMessage) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error_outline,
+                  color: Colors.white,
+                  size: 64,
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Video Unavailable',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  errorMessage,
+                  style: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: 14,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          );
+        },
+      );
+
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      print('Error initializing video player: $e');
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _hasError = true;
+          _errorMessage = 'Failed to load video: $e';
+        });
+      }
     }
   }
-
-  // Future<void> _loadVideoMetaData() async {
-  //   await _communityService.getVideoMetaData(widget.videoId);
-  //   setState(() {
-  //     authorName = _communityService.videoMetaData['author_name'] ?? 'Author Name';
-  //     title = _communityService.videoMetaData['title'] ?? 'Author Name';
-  //   });
-  // }
 
   @override
   void dispose() {
-    if (mounted) {
-      _controller.dispose();
-    }
+    _videoPlayerController.dispose();
+    _chewieController?.dispose();
     super.dispose();
   }
 
@@ -80,19 +149,10 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
         titleSpacing: 0,
         title: Row(
           children: [
-            // Text(
-            //   authorName,
-            //   style: const TextStyle(
-            //     color: Colors.white,
-            //     fontFamily: 'Poppins',
-            //     fontSize: 20,
-            //     fontWeight: FontWeight.w600,
-            //   ),
-            // ),
             const Spacer(),
             IconButton(
               onPressed: () =>
-                  Share.share('https://www.youtube.com/shorts/Soj8QxH-bto'),
+                  Share.share('https://www.youtube.com/watch?v=dQw4w9WgXcQ'),
               icon: Icon(
                 Icons.share,
                 size: MediaQuery.of(context).size.height * 0.0325,
@@ -108,7 +168,6 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
                 size: MediaQuery.of(context).size.height * 0.045,
                 color: Colors.white),
             onPressed: () {
-              // Navigate back when pressed
               Navigator.pop(context);
             },
           ),
@@ -117,7 +176,7 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
       body: Stack(
         children: [
           Container(
-            color: Colors.black, // Background color
+            color: Colors.black,
             width: double.infinity,
             height: double.infinity,
           ),
@@ -127,22 +186,83 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
               children: [
                 Stack(
                   children: [
-                    PodVideoPlayer(
-                      controller: _controller,
-                      frameAspectRatio: isFullScreen ? 16 / 9 : 9 / 16,
-                      videoAspectRatio: isFullScreen ? 16 / 9 : 9 / 16,
-                      alwaysShowProgressBar: true,
-                      onToggleFullScreen: (isFullScreen) async {
-                        setState(() {
-                          this.isFullScreen = isFullScreen;
-                        });
-                      },
-                      podProgressBarConfig: const PodProgressBarConfig(
-                          height: 2, curveRadius: 0, circleHandlerRadius: 0),
-                      // videoThumbnail: DecorationImage(
-                      //   image: NetworkImage(
-                      //       'assets/Farming_Guides/${widget.videoId}.jpg'),
-                      // ),
+                    Container(
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      color: Colors.black,
+                      child: _isLoading
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(height: 16),
+                                  Text(
+                                    'Loading Video...',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : _hasError
+                              ? Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.error_outline,
+                                        color: Colors.white,
+                                        size: 64,
+                                      ),
+                                      SizedBox(height: 16),
+                                      Text(
+                                        'Video Unavailable',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(height: 8),
+                                      Text(
+                                        _errorMessage,
+                                        style: TextStyle(
+                                          color: Colors.grey[400],
+                                          fontSize: 14,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      SizedBox(height: 16),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            _isLoading = true;
+                                            _hasError = false;
+                                            _errorMessage = '';
+                                          });
+                                          _initializeVideoPlayer();
+                                        },
+                                        child: Text('Retry'),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : _chewieController != null
+                                  ? Chewie(controller: _chewieController!)
+                                  : Container(
+                                      color: Colors.black,
+                                      child: Center(
+                                        child: Text(
+                                          'Video not available',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
                     ),
                     Positioned(
                       left: 0,
@@ -159,13 +279,12 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
                                     bookmark = !bookmark;
                                   });
                                 },
-                                icon: SvgPicture.asset(
+                                icon: Icon(
                                   bookmark
-                                      ? 'assets/icons/Saved_post.svg'
-                                      : 'assets/icons/Saved_pre.svg',
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.11,
-                                  fit: BoxFit.contain,
+                                      ? Icons.bookmark
+                                      : Icons.bookmark_border,
+                                  color: Colors.white,
+                                  size: 28,
                                 ),
                               ),
                               IconButton(
@@ -174,18 +293,17 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
                                     videoSound = !videoSound;
                                   });
                                   if (videoSound) {
-                                    _controller.mute();
+                                    _videoPlayerController.setVolume(0.0);
                                   } else {
-                                    _controller.unMute();
+                                    _videoPlayerController.setVolume(1.0);
                                   }
                                 },
-                                icon: SvgPicture.asset(
+                                icon: Icon(
                                   videoSound
-                                      ? 'assets/icons/Speaker_post.svg'
-                                      : 'assets/icons/Speaker_pre.svg',
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.11,
-                                  fit: BoxFit.contain,
+                                      ? Icons.volume_off
+                                      : Icons.volume_up,
+                                  color: Colors.white,
+                                  size: 28,
                                 ),
                               ),
                               IconButton(
@@ -194,44 +312,16 @@ class _YouTubePlayerScreenState extends State<YouTubePlayerScreen> {
                                     videoLike = !videoLike;
                                   });
                                 },
-                                icon: SvgPicture.asset(
+                                icon: Icon(
                                   videoLike
-                                      ? 'assets/icons/Like_post.svg'
-                                      : 'assets/icons/Like_pre.svg',
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.11,
-                                  fit: BoxFit.contain,
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  color: videoLike ? Colors.red : Colors.white,
+                                  size: 28,
                                 ),
                               )
                             ],
                           ),
-                          // SizedBox(
-                          //   width: MediaQuery.of(context).size.width,
-                          //   height: 100,
-                          //   child: ClipRect(
-                          //     child: BackdropFilter(
-                          //       filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                          //       child: Container(
-                          //         padding: const EdgeInsets.only(
-                          //             left: 6, right: 10.0, top: 6),
-                          //         color: Colors.transparent,
-                          //         child: SingleChildScrollView(
-                          //           child: Text(
-                          //             title,
-                          //             style: const TextStyle(
-                          //               color: Colors.white,
-                          //               fontFamily: 'Poppins',
-                          //               fontSize: 20,
-                          //               fontWeight: FontWeight.w500,
-                          //             ),
-                          //             maxLines: 3,
-                          //             overflow: TextOverflow.ellipsis,
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
                         ],
                       ),
                     ),

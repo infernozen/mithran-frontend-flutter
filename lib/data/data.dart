@@ -1,375 +1,418 @@
-// agrishops_data.dart
+// agri_data.dart
+// Consolidated dataset with safe, royalty-free images (Pixabay/Wikimedia).
 
 const agriShops = [
   {
     "title": "Green Valley Farm Supplies",
-    "image": "https://shorturl.at/W5eJL",
+    "image":
+        "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "Springfield",
     "subtitle2": "5.2 km away",
     "subtitle3": "Verified"
   },
   {
     "title": "Harvest Home Equipment",
-    "image": "https://shorturl.at/W5eJL",
+    "image":
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "Riverdale",
     "subtitle2": "3.8 km away",
     "subtitle3": "Verified"
   },
   {
     "title": "Fertile Fields Agri Mart",
-    "image": "https://shorturl.at/W5eJL",
+    "image":
+        "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "Greenville",
     "subtitle2": "7.5 km away",
     "subtitle3": "Verified"
   },
   {
     "title": "Sunrise Agri Solutions",
-    "image": "https://shorturl.at/W5eJL",
+    "image":
+        "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "Lakeside",
     "subtitle2": "2.1 km away",
     "subtitle3": "Verified"
   },
   {
     "title": "Nature's Bounty Supplies",
-    "image": "https://shorturl.at/W5eJL",
+    "image":
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "Hilltown",
     "subtitle2": "9.0 km away",
     "subtitle3": "Verified"
   },
   {
     "title": "AgriTech Tools & Equipment",
-    "image": "https://shorturl.at/W5eJL",
+    "image":
+        "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "Westford",
     "subtitle2": "6.3 km away",
     "subtitle3": "Verified"
   },
   {
     "title": "Farm Fresh Solutions",
-    "image": "https://shorturl.at/W5eJL",
+    "image":
+        "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "Brookside",
     "subtitle2": "4.7 km away",
     "subtitle3": "Verified"
   },
   {
     "title": "GrowWell Garden Supplies",
-    "image": "https://shorturl.at/W5eJL",
+    "image":
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "Mapleton",
     "subtitle2": "8.4 km away",
     "subtitle3": "Verified"
   },
   {
     "title": "Seed & Soil Store",
-    "image": "https://shorturl.at/W5eJL",
+    "image":
+        "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "Riverbank",
     "subtitle2": "3.2 km away",
     "subtitle3": "Verified"
   },
   {
     "title": "Crop Care Centre",
-    "image": "https://shorturl.at/W5eJL",
+    "image":
+        "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "Meadowview",
     "subtitle2": "5.9 km away",
     "subtitle3": "Verified"
   }
 ];
 
-// sample_fertilizers.dart
-
 const fertilizersData = [
   {
     "title": "Urea Fertilizer",
-    "image": "https://shorturl.at/Zoh05",
+    "image":
+        "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "AgriGrow Co.",
     "subtitle2": "₹500",
-    "subtitle3": "50kg"
+    "subtitle3": "50 kg"
   },
   {
     "title": "DAP Fertilizer",
-    "image": "https://shorturl.at/Zoh05",
+    "image":
+        "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "GreenLeaf Supply",
     "subtitle2": "₹750",
-    "subtitle3": "50kg"
+    "subtitle3": "50 kg"
   },
   {
     "title": "Potash Fertilizer",
-    "image": "https://shorturl.at/Zoh05",
+    "image":
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "Farmers' Choice",
     "subtitle2": "₹850",
-    "subtitle3": "100kg"
+    "subtitle3": "100 kg"
   },
   {
     "title": "Ammonium Sulfate",
-    "image": "https://shorturl.at/Zoh05",
+    "image":
+        "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "AgriTech Solutions",
     "subtitle2": "₹600",
-    "subtitle3": "50kg"
+    "subtitle3": "50 kg"
   },
   {
     "title": "NPK 19-19-19",
-    "image": "https://shorturl.at/Zoh05",
+    "image":
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "GrowWell Supplies",
     "subtitle2": "₹950",
-    "subtitle3": "50kg"
+    "subtitle3": "50 kg"
   },
   {
     "title": "Superphosphate",
-    "image": "https://shorturl.at/Zoh05",
+    "image":
+        "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "FarmPro Ltd.",
     "subtitle2": "₹700",
-    "subtitle3": "100kg"
+    "subtitle3": "100 kg"
   },
   {
     "title": "Calcium Nitrate",
-    "image": "https://shorturl.at/Zoh05",
+    "image":
+        "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "AgroVantage",
     "subtitle2": "₹550",
-    "subtitle3": "25kg"
+    "subtitle3": "25 kg"
   },
   {
     "title": "Zinc Sulfate",
-    "image": "https://shorturl.at/Zoh05",
+    "image":
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "Nature's Yield",
     "subtitle2": "₹400",
-    "subtitle3": "25kg"
+    "subtitle3": "25 kg"
   },
   {
     "title": "Organic Manure",
-    "image": "https://shorturl.at/Zoh05",
+    "image":
+        "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "EcoFarm Products",
     "subtitle2": "₹350",
-    "subtitle3": "40kg"
+    "subtitle3": "40 kg"
   },
   {
     "title": "Seaweed Extract",
-    "image": "https://shorturl.at/Zoh05",
+    "image":
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "Oceanic Fertilizers",
     "subtitle2": "₹1200",
-    "subtitle3": "50kg"
+    "subtitle3": "50 kg"
   }
 ];
-
-// sample_pesticides.dart
 
 const PesticidesData = [
   {
     "title": "Insecticide X",
-    "image": "https://shorturl.at/IZTmE",
+    "image":
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "PestControl Solutions",
     "subtitle2": "₹1200",
-    "subtitle3": "1L"
+    "subtitle3": "1 L"
   },
   {
     "title": "Herbicide Y",
-    "image": "https://shorturl.at/IZTmE",
+    "image":
+        "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "GreenField Products",
     "subtitle2": "₹850",
-    "subtitle3": "500ml"
+    "subtitle3": "500 ml"
   },
   {
     "title": "Fungicide Z",
-    "image": "https://shorturl.at/IZTmE",
+    "image":
+        "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "AgriProtect Ltd.",
     "subtitle2": "₹650",
-    "subtitle3": "1L"
+    "subtitle3": "1 L"
   },
   {
     "title": "Weed Killer Pro",
-    "image": "https://shorturl.at/IZTmE",
+    "image":
+        "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "FarmSafe Co.",
     "subtitle2": "₹950",
-    "subtitle3": "1L"
+    "subtitle3": "1 L"
   },
   {
     "title": "Bug Buster",
-    "image": "https://shorturl.at/IZTmE",
+    "image":
+        "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "PestMaster Inc.",
     "subtitle2": "₹500",
-    "subtitle3": "250ml"
+    "subtitle3": "250 ml"
   },
   {
     "title": "Crop Defender",
-    "image": "https://shorturl.at/IZTmE",
+    "image":
+        "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "AgriGuard Products",
     "subtitle2": "₹700",
-    "subtitle3": "1L"
+    "subtitle3": "1 L"
   },
   {
     "title": "Mite Eliminator",
-    "image": "https://shorturl.at/IZTmE",
+    "image":
+        "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "GreenGuard Enterprises",
     "subtitle2": "₹400",
-    "subtitle3": "500ml"
+    "subtitle3": "500 ml"
   },
   {
     "title": "LeafShield",
-    "image": "https://shorturl.at/IZTmE",
+    "image":
+        "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "NatureCare Pesticides",
     "subtitle2": "₹1100",
-    "subtitle3": "1L"
+    "subtitle3": "1 L"
   },
   {
     "title": "Blight Fighter",
-    "image": "https://shorturl.at/IZTmE",
+    "image":
+        "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "CropCare Solutions",
     "subtitle2": "₹800",
-    "subtitle3": "1L"
+    "subtitle3": "1 L"
   },
   {
     "title": "Pest Eraser",
-    "image": "https://shorturl.at/IZTmE",
+    "image":
+        "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "EcoProtect Agro",
     "subtitle2": "₹600",
-    "subtitle3": "500ml"
+    "subtitle3": "500 ml"
   }
 ];
-
-// sample_herbicides.dart
 
 const HerbicidesData = [
   {
     "title": "WeedClear Herbicide",
-    "image": "https://shorturl.at/EWhuu",
+    "image":
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "AgroSolutions",
     "subtitle2": "₹1000",
-    "subtitle3": "1L"
+    "subtitle3": "1 L"
   },
   {
     "title": "GreenKill",
-    "image": "https://shorturl.at/EWhuu",
+    "image":
+        "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "FarmSafe Herbicides",
     "subtitle2": "₹750",
     "subtitle3": "500ml"
   },
   {
     "title": "RoundMaster",
-    "image": "https://shorturl.at/EWhuu",
+    "image":
+        "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "CropGuard",
     "subtitle2": "₹850",
-    "subtitle3": "1L"
+    "subtitle3": "1 L"
   },
   {
     "title": "HerbiMax",
-    "image": "https://shorturl.at/EWhuu",
+    "image":
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "GreenFarm Ltd.",
     "subtitle2": "₹900",
-    "subtitle3": "1L"
+    "subtitle3": "1 L"
   },
   {
     "title": "WeedOut",
-    "image": "https://shorturl.at/EWhuu",
+    "image":
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "NatureCare Solutions",
     "subtitle2": "₹650",
-    "subtitle3": "250ml"
+    "subtitle3": "250 ml"
   },
   {
     "title": "HerbEx",
-    "image": "https://shorturl.at/EWhuu",
+    "image":
+        "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "EcoHerbicides",
     "subtitle2": "₹550",
-    "subtitle3": "500ml"
+    "subtitle3": "500 ml"
   },
   {
     "title": "PlantGuard",
-    "image": "https://shorturl.at/EWhuu",
+    "image":
+        "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "AgriProtect",
     "subtitle2": "₹1200",
-    "subtitle3": "1L"
+    "subtitle3": "1 L"
   },
   {
     "title": "WeedBlaster",
-    "image": "https://shorturl.at/EWhuu",
+    "image":
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "SafeCrop Enterprises",
     "subtitle2": "₹950",
-    "subtitle3": "1L"
+    "subtitle3": "1 L"
   },
   {
     "title": "HerbiSafe",
-    "image": "https://shorturl.at/EWhuu",
+    "image":
+        "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "BioAgri Products",
     "subtitle2": "₹700",
-    "subtitle3": "500ml"
+    "subtitle3": "500 ml"
   },
   {
     "title": "GreenGuard Herbicide",
-    "image": "https://shorturl.at/EWhuu",
+    "image":
+        "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "Farmers' Best",
     "subtitle2": "₹600",
-    "subtitle3": "250ml"
+    "subtitle3": "250 ml"
   }
 ];
-
-// sample_seeds.dart
 
 const seedsData = [
   {
     "title": "Tomato Seeds",
-    "image": "https://shorturl.at/PLzFj",
+    "image":
+        "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "AgriGrow Seeds",
     "subtitle2": "₹250",
-    "subtitle3": "500g"
+    "subtitle3": "500 g"
   },
   {
     "title": "Carrot Seeds",
-    "image": "https://shorturl.at/PLzFj",
+    "image":
+        "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "GreenLeaf Supply",
     "subtitle2": "₹300",
-    "subtitle3": "250g"
+    "subtitle3": "250 g"
   },
   {
     "title": "Lettuce Seeds",
-    "image": "https://shorturl.at/PLzFj",
+    "image":
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "FarmFresh Seeds",
     "subtitle2": "₹200",
-    "subtitle3": "100g"
+    "subtitle3": "100 g"
   },
   {
     "title": "Cucumber Seeds",
-    "image": "https://shorturl.at/PLzFj",
+    "image":
+        "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "SeedMasters",
     "subtitle2": "₹280",
-    "subtitle3": "500g"
+    "subtitle3": "500 g"
   },
   {
     "title": "Bell Pepper Seeds",
-    "image": "https://shorturl.at/PLzFj",
+    "image":
+        "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "GrowWell Supplies",
     "subtitle2": "₹320",
-    "subtitle3": "200g"
+    "subtitle3": "200 g"
   },
   {
     "title": "Spinach Seeds",
-    "image": "https://shorturl.at/PLzFj",
+    "image":
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "Nature's Yield",
     "subtitle2": "₹230",
-    "subtitle3": "250g"
+    "subtitle3": "250 g"
   },
   {
     "title": "Pumpkin Seeds",
-    "image": "https://shorturl.at/PLzFj",
+    "image":
+        "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "AgriTech",
     "subtitle2": "₹270",
-    "subtitle3": "1kg"
+    "subtitle3": "1 kg"
   },
   {
     "title": "Onion Seeds",
-    "image": "https://shorturl.at/PLzFj",
+    "image":
+        "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "FarmPro Ltd.",
     "subtitle2": "₹290",
-    "subtitle3": "500g"
+    "subtitle3": "500 g"
   },
   {
     "title": "Radish Seeds",
-    "image": "https://shorturl.at/PLzFj",
+    "image":
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "EcoSeeds",
     "subtitle2": "₹210",
-    "subtitle3": "200g"
+    "subtitle3": "200 g"
   },
   {
     "title": "Beetroot Seeds",
-    "image": "https://shorturl.at/PLzFj",
+    "image":
+        "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=400&q=80",
     "subtitle1": "AgroVantage",
     "subtitle2": "₹260",
-    "subtitle3": "300g"
+    "subtitle3": "300 g"
   }
 ];
 
@@ -532,7 +575,6 @@ const cropStages = {
     }
   ]
 };
-
 
 const fieldData = [
   {
